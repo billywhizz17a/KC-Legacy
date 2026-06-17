@@ -22,8 +22,8 @@ TEXT_UPLOADS_DIR = os.path.join(BASE_DIR, "uploads", "text")
 IMAGE_UPLOADS_DIR = os.path.join(BASE_DIR, "uploads", "images")
 RESPONSES_DIR = os.path.join(BASE_DIR, "uploads", "responses")
 # Static customer website files (index.html, app.js, style.css, etc.)
-# Hardcoded to /home/kclegeacy/www/ where you uploaded them on PythonAnywhere
-WWW_DIR = "/home/kclegeacy/www"
+# Uses the www/ folder inside the repo so git updates refresh the site
+WWW_DIR = os.path.join(BASE_DIR, "www")
 
 os.makedirs(TEXT_UPLOADS_DIR, exist_ok=True)
 os.makedirs(IMAGE_UPLOADS_DIR, exist_ok=True)

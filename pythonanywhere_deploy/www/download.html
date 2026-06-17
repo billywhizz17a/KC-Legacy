@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0d0d0d">
+  <title>KC Legacy - Download App</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+    .download-card {
+      text-align: center;
+      max-width: 400px;
+    }
+    .download-card h1 {
+      color: var(--gold);
+      margin-bottom: 10px;
+    }
+    .download-card p {
+      color: var(--muted);
+      margin-bottom: 30px;
+      font-size: 0.9rem;
+    }
+    .btn-download {
+      display: inline-block;
+      background: var(--gold);
+      color: #000;
+      padding: 16px 40px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 1.1rem;
+      margin-bottom: 15px;
+    }
+    .note {
+      color: #888;
+      font-size: 0.8rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="download-card">
+    <h1>📱 KC Legacy Booking</h1>
+    <p>Download our app to book your valeting service and check your booking status.</p>
+    <a href="https://kclegeacy.pythonanywhere.com/app-debug.apk" class="btn-download">DOWNLOAD APK</a>
+    <p class="note">Android only. You may need to enable "Install from unknown sources" in Settings.</p>
+  </div>
+</body>
+</html>
