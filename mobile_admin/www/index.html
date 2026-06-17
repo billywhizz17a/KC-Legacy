@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#d4af37">
+  <title>KC Legacy - Admin</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="style.css">
+  <link rel="apple-touch-icon" href="icon-192.png">
+</head>
+<body>
+
+  <!-- Splash / Login Screen -->
+  <div id="login-screen" class="screen active">
+    <div class="login-box">
+      <div class="logo-text">KC LEGACY</div>
+      <div class="logo-sub">VALETING & DETAILING</div>
+      <div class="gold-line"></div>
+      <p class="login-desc">Admin Dashboard</p>
+      <input type="text" id="api-url-input" placeholder="API Server URL" value="https://kclegeacy.pythonanywhere.com">
+      <input type="password" id="entry-input" placeholder="Enter Admin Entry Name" autocomplete="off">
+      <button id="login-btn" class="btn-gold">ACCESS DASHBOARD</button>
+      <p id="login-error" class="error-msg"></p>
+    </div>
+  </div>
+
+  <!-- Main App Screen -->
+  <div id="app-screen" class="screen">
+    <!-- Header -->
+    <header class="app-header">
+      <div class="header-branding">
+        <div class="header-title">KC LEGACY</div>
+        <div class="header-sub">VALETING & DETAILING</div>
+        <div class="header-gold-line"></div>
+      </div>
+      <button id="logout-btn" class="btn-small">Logout</button>
+    </header>
+
+    <!-- Connection Status -->
+    <div id="conn-status" class="conn-bar">Connecting...</div>
+
+    <!-- Stats Cards -->
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-number" id="stat-bookings">0</div>
+        <div class="stat-label">Bookings</div>
+      </div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="tab-bar">
+      <button class="tab-btn active" data-tab="bookings">Bookings</button>
+      <button class="tab-btn" data-tab="calendar">Calendar</button>
+    </div>
+
+    <!-- Bookings Tab -->
+    <div id="tab-bookings" class="tab-panel active">
+      <div class="live-datetime" id="live-datetime">Loading...</div>
+      <!-- Search & Filters -->
+      <div class="search-bar">
+        <input type="text" id="booking-search" placeholder="Search name, phone, car..." autocomplete="off">
+      </div>
+      <div class="filter-chips">
+        <button class="chip active" data-status="all">All</button>
+        <button class="chip" data-status="pending">Pending</button>
+        <button class="chip" data-status="confirmed">Confirmed</button>
+        <button class="chip" data-status="reschedule">Reschedule</button>
+        <button class="chip" data-status="completed">Completed</button>
+      </div>
+
+      <div class="panel-header">
+        <h2>Recent Bookings</h2>
+        <button id="refresh-bookings" class="btn-icon">&#x21bb;</button>
+      </div>
+      <div id="bookings-list" class="item-list">
+        <div class="loading">Loading bookings...</div>
+      </div>
+    </div>
+
+    <!-- Calendar Tab -->
+    <div id="tab-calendar" class="tab-panel">
+      <div class="panel-header">
+        <h2>Booking Calendar</h2>
+        <div class="calendar-nav">
+          <button id="cal-prev" class="btn-icon">&#x2039;</button>
+          <span id="cal-month-label">June 2026</span>
+          <button id="cal-next" class="btn-icon">&#x203A;</button>
+        </div>
+      </div>
+      <div id="calendar-grid" class="calendar-container">
+        <div class="calendar-weekdays">
+          <span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span>
+        </div>
+        <div id="calendar-days" class="calendar-days"></div>
+      </div>
+      <div id="day-bookings" class="day-bookings-list" style="display:none;">
+        <div class="panel-header" style="margin-top:12px;">
+          <h3 id="day-label">Bookings for --</h3>
+          <button id="back-to-cal" class="btn-icon">&#x21bb;</button>
+        </div>
+        <div id="day-bookings-list" class="item-list"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Booking Detail Modal -->
+  <div id="booking-modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Booking Details</h3>
+        <button class="modal-close">&times;</button>
+      </div>
+      <pre id="booking-content" class="booking-text"></pre>
+
+      <!-- Response Section -->
+      <div class="response-section">
+        <div class="detail-label" style="margin-bottom:8px;">Response to Customer</div>
+        <select id="status-select" class="status-select">
+          <option value="pending">Pending</option>
+          <option value="confirmed">Confirmed</option>
+          <option value="reschedule">Reschedule Requested</option>
+          <option value="completed">Completed</option>
+        </select>
+        <textarea id="response-text" class="response-textarea" placeholder="Type your response to the customer... (e.g. We can confirm your booking for 2pm instead)"></textarea>
+        <div class="response-buttons">
+          <button id="save-response-btn" class="btn-gold">Save Response</button>
+          <button id="send-email-btn" class="btn-email">Send to Customer</button>
+        </div>
+        <div class="email-note">Customer can check their booking status on the website</div>
+        <div id="response-status-msg" class="response-msg"></div>
+      </div>
+
+      <button id="delete-booking-btn" class="btn-danger">Delete Booking</button>
+    </div>
+  </div>
+
+
+  <script src="app.js"></script>
+</body>
+</html>

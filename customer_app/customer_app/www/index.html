@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#d4af37">
+  <title>KC Legacy Valeting - Book Now</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="style.css">
+  <link rel="apple-touch-icon" href="icon-192.png">
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="app-header">
+    <img src="header2.jpg" alt="KC Legacy Valeting" class="header-banner">
+  </header>
+
+  <div class="container">
+
+    <!-- Intro -->
+    <div class="intro">
+      <h1>Book Your Valet</h1>
+      <p>Professional valeting &amp; detailing at your convenience</p>
+    </div>
+
+    <!-- Booking Form -->
+    <form id="booking-form" class="section">
+
+      <!-- Customer Details -->
+      <div class="form-group">
+        <h2>Your Details</h2>
+        <input type="text" id="cust-name" placeholder="Full Name" required>
+        <input type="tel" id="cust-phone" placeholder="Phone Number" required>
+        <input type="email" id="cust-email" placeholder="Email Address">
+      </div>
+
+      <!-- Vehicle Details -->
+      <div class="form-group">
+        <h2>Vehicle</h2>
+        <input type="text" id="car-make" placeholder="Car Make & Model" required>
+        <input type="text" id="car-reg" placeholder="Registration (optional)">
+      </div>
+
+      <!-- Date -->
+      <div class="form-group">
+        <h2>Preferred Date</h2>
+        <input type="date" id="booking-date" required>
+      </div>
+
+      <!-- Package -->
+      <div class="form-group">
+        <h2>Select Package</h2>
+        <div class="package-list">
+          <label class="package-card">
+            <input type="radio" name="package" value="Legacy Refresh|25" checked>
+            <div class="package-content">
+              <div class="package-title">Legacy Refresh</div>
+              <div class="package-sub">Express Valet</div>
+              <div class="package-price">From &pound;25</div>
+            </div>
+          </label>
+          <label class="package-card">
+            <input type="radio" name="package" value="Legacy Revival|65">
+            <div class="package-content">
+              <div class="package-title">Legacy Revival</div>
+              <div class="package-sub">Full Valet</div>
+              <div class="package-price">From &pound;65</div>
+            </div>
+          </label>
+          <label class="package-card">
+            <input type="radio" name="package" value="Legacy Elite|200">
+            <div class="package-content">
+              <div class="package-title">Legacy Elite</div>
+              <div class="package-sub">Showroom Stopper</div>
+              <div class="package-price">From &pound;200</div>
+            </div>
+          </label>
+        </div>
+      </div>
+
+      <!-- Add-ons -->
+      <div class="form-group">
+        <h2>Optional Add-Ons</h2>
+        <div class="addon-list">
+          <label class="addon-card">
+            <input type="checkbox" value="Pet Hair Removal|15">
+            <span>Pet Hair Removal</span>
+            <span class="addon-price">+&pound;15</span>
+          </label>
+          <label class="addon-card">
+            <input type="checkbox" value="Engine Bay Wipe Down|8">
+            <span>Engine Bay Wipe Down</span>
+            <span class="addon-price">+&pound;8</span>
+          </label>
+          <label class="addon-card">
+            <input type="checkbox" value="Interior Steam Sanitisation|10">
+            <span>Interior Steam Sanitisation</span>
+            <span class="addon-price">+&pound;10</span>
+          </label>
+          <label class="addon-card">
+            <input type="checkbox" value="Iron Fallout & Clay Bar|30">
+            <span>Iron Fallout &amp; Clay Bar</span>
+            <span class="addon-price">+&pound;30</span>
+          </label>
+          <label class="addon-card">
+            <input type="checkbox" value="Machine Polish & Ceramic Wax|130">
+            <span>Machine Polish &amp; Ceramic Wax</span>
+            <span class="addon-price">+&pound;130</span>
+          </label>
+          <label class="addon-card">
+            <input type="checkbox" value="Headliner Stain Removal|10">
+            <span>Headliner Stain Removal</span>
+            <span class="addon-price">+&pound;10</span>
+          </label>
+          <label class="addon-card">
+            <input type="checkbox" value="Carpet Extraction Clean|25">
+            <span>Carpet Extraction Clean</span>
+            <span class="addon-price">+&pound;25</span>
+          </label>
+          <label class="addon-card">
+            <input type="checkbox" value="Seat Shampoo & Extraction|25">
+            <span>Seat Shampoo &amp; Extraction</span>
+            <span class="addon-price">+&pound;25</span>
+          </label>
+          <label class="addon-card">
+            <input type="checkbox" value="Child Seat Sanitisation|10">
+            <span>Child Seat Sanitisation</span>
+            <span class="addon-price">+&pound;10</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Special Requests -->
+      <div class="form-group">
+        <h2>Special Instructions</h2>
+        <textarea id="special-requests" rows="3" placeholder="Any special requests or notes..."></textarea>
+      </div>
+
+      <!-- Quote Box -->
+      <div class="quote-box">
+        <div class="quote-label">Estimated Price</div>
+        <div class="quote-amount">&pound;<span id="quote-price">25</span></div>
+        <div class="quote-breakdown" id="quote-breakdown">Legacy Refresh: &pound;25</div>
+      </div>
+
+      <!-- Buttons -->
+      <div class="button-row">
+        <button type="button" id="quote-btn" class="btn-outline">QUOTE ME</button>
+        <button type="submit" id="submit-btn" class="btn-gold">BOOK NOW</button>
+      </div>
+
+      <p id="form-msg" class="msg"></p>
+    </form>
+
+    <!-- Success Screen -->
+    <div id="success-screen" class="screen hidden">
+      <div class="success-icon">&#10003;</div>
+      <h2>Booking Confirmed!</h2>
+      <p style="color: var(--muted); margin-bottom: 10px;">Your booking has been received. Save your reference number below.</p>
+      <div class="booking-ref" style="margin: 15px 0;">
+        <div class="ref-label">Booking Reference</div>
+        <div class="ref-number" id="ref-number" style="font-size: 2rem; letter-spacing: 3px;">---</div>
+      </div>
+      <p style="color: #888; font-size: 0.85rem; margin: 10px 0 15px; padding: 0 20px; text-align: center;">
+        We will review your booking and respond below. Use your reference number to check for updates at any time.
+      </p>
+      <button id="check-status-btn" class="btn-gold" style="width: 80%; margin-bottom: 10px;">CHECK FOR UPDATES</button>
+      <button id="new-booking-btn" class="btn-outline" style="width: 80%;">Make Another Booking</button>
+      <p class="countdown-text" style="color: #555; font-size: 0.8rem; margin-top: 15px;">Auto-return in <span id="countdown">10</span>s</p>
+    </div>
+
+    <!-- Check My Booking -->
+    <div class="check-booking-section" id="check-booking">
+      <h2 style="text-align:center; margin-bottom: 10px;">Check My Booking</h2>
+      <p style="text-align:center; color: #888; font-size: 0.9rem; margin-bottom: 15px;">Enter your booking reference to see updates</p>
+      <div class="check-form">
+        <input type="text" id="check-ref" placeholder="Booking Reference (e.g. abc12345)" maxlength="20" style="text-align:center; text-transform:uppercase;">
+        <button id="check-btn" class="btn-gold" style="width:100%; margin-top:10px;">CHECK STATUS</button>
+      </div>
+      <div id="check-result" class="check-result hidden">
+        <div class="check-status-row">
+          <span class="check-label">Status</span>
+          <span id="check-status-badge" class="check-badge">Pending</span>
+        </div>
+        <pre id="check-details" class="check-details"></pre>
+        <div id="check-responses" class="check-responses"></div>
+      </div>
+      <p id="check-msg" class="msg"></p>
+    </div>
+
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
