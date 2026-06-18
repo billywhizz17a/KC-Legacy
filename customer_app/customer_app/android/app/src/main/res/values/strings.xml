@@ -1,7 +1,0 @@
-<?xml version='1.0' encoding='utf-8'?>
-<resources>
-    <string name="app_name">KC Legacy Booking</string>
-    <string name="title_activity_main">KC Legacy Booking</string>
-    <string name="package_name">com.kclegacy.customer</string>
-    <string name="custom_url_scheme">com.kclegacy.customer</string>
-</resources>
