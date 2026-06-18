@@ -407,7 +407,7 @@ body {
 /* Package Cards */
 .package-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
   gap: 24px;
 }
 .luxury-card {
@@ -451,7 +451,7 @@ body {
 /* Addon Cards (Home page) */
 .addon-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(250px, 100%), 1fr));
   gap: 15px;
 }
 .addon-card {
@@ -534,7 +534,7 @@ body {
 /* Package Selection */
 .package-select-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr));
   gap: 12px;
   margin-bottom: 20px;
 }
@@ -568,7 +568,7 @@ body {
 /* Addon Selection */
 .addon-select-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(180px, 100%), 1fr));
   gap: 10px;
   margin-bottom: 20px;
 }
@@ -673,7 +673,7 @@ body {
 /* Gallery */
 .gallery-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(300px, 100%), 1fr));
   gap: 25px;
 }
 .gallery-item {
@@ -687,6 +687,36 @@ body {
   height: 100%;
   object-fit: cover;
   display: block;
+}
+
+/* Gold HR */
+.gold-hr {
+  border: none;
+  height: 1px;
+  background: linear-gradient(to right, transparent, rgba(212,175,55,0.5), transparent);
+  margin: 40px 0;
+}
+
+/* Check Booking Result */
+.check-title {
+  color: var(--gold);
+  text-align: center;
+  font-size: 1.3rem;
+  margin-bottom: 8px;
+}
+.check-desc {
+  color: #aaa;
+  text-align: center;
+  font-size: 0.9rem;
+  margin-bottom: 20px;
+}
+.check-result-site {
+  max-width: 600px;
+  margin: 20px auto 0;
+  padding: 20px;
+  background: #111;
+  border: 1px solid rgba(212,175,55,0.2);
+  border-radius: 12px;
 }
 
 /* Responsive Overrides */
@@ -726,19 +756,114 @@ body {
   .hero-banner {
     height: 45vh;
   }
+  .promise-box {
+    padding: 20px 16px;
+    margin: 25px auto;
+  }
+  .qr-box {
+    padding: 20px 16px;
+    margin: 25px auto;
+  }
+  .qr-grid {
+    gap: 20px;
+  }
+  .quote-amount-site {
+    font-size: 2.2rem;
+  }
+  .btn-gold-site {
+    padding: 12px 20px;
+    font-size: 1rem;
+  }
 }
 
 @media (max-width: 480px) {
   .main-content {
-    padding: 20px 15px;
+    padding: 20px 12px;
   }
   .luxury-card {
-    padding: 20px;
+    padding: 18px 14px;
   }
-  .package-select-grid {
-    grid-template-columns: 1fr;
+  .luxury-card h3 {
+    font-size: 1.2rem;
   }
-  .addon-select-grid {
-    grid-template-columns: 1fr;
+  .card-price {
+    font-size: 1.3rem;
+  }
+  .card-details {
+    font-size: 0.85rem;
+  }
+  .addon-card {
+    padding: 16px 12px;
+  }
+  .booking-form {
+    padding: 20px 14px;
+  }
+  .form-section-title {
+    font-size: 1.05rem;
+  }
+  .form-field input,
+  .form-field textarea {
+    font-size: 0.9rem;
+    padding: 10px 12px;
+  }
+  .package-select {
+    padding: 12px 10px;
+  }
+  .package-select span {
+    font-size: 0.9rem;
+  }
+  .addon-select {
+    padding: 10px 8px;
+  }
+  .addon-select span {
+    font-size: 0.82rem;
+  }
+  .quote-amount-site {
+    font-size: 1.8rem;
+  }
+  .promise-box p {
+    font-size: 0.9rem;
+    line-height: 1.6;
+  }
+  .qr-img {
+    width: 160px;
+  }
+  .check-form-site input {
+    font-size: 1rem;
+    padding: 10px 14px;
+  }
+}
+
+@media (max-width: 360px) {
+  .main-content {
+    padding: 15px 8px;
+  }
+  .hero-banner {
+    height: 35vh;
+    min-height: 220px;
+  }
+  .luxury-card {
+    padding: 14px 10px;
+  }
+  .booking-form {
+    padding: 16px 10px;
+  }
+  .promise-box {
+    padding: 16px 10px;
+  }
+  .qr-box {
+    padding: 16px 10px;
+  }
+}
+
+@media (min-width: 1600px) {
+  .main-content {
+    padding: 50px 60px;
+  }
+  .promise-box, .qr-box {
+    max-width: 1100px;
+  }
+  .booking-form {
+    max-width: 900px;
   }
 }
