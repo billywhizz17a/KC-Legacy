@@ -331,8 +331,8 @@ function parseBookingContent(content) {
   let inAddons = false, inSpecial = false;
   for (let line of lines) {
     line = line.trim();
-    if (line.startsWith('Booking ID:')) p.bookingId = line.split(':')[1].trim();
-    else if (line.startsWith('Submission Date:')) p.submissionDate = line.split(':').slice(1).join(':').trim();
+    if (line.startsWith('Booking ID:') || line.startsWith('Quote ID:')) p.bookingId = line.split(':')[1].trim();
+    else if (line.startsWith('Submission Date:') || line.startsWith('Request Date:')) p.submissionDate = line.split(':').slice(1).join(':').trim();
     else if (line.startsWith('Name:')) p.name = line.split(':')[1].trim();
     else if (line.startsWith('Phone:')) p.phone = line.split(':')[1].trim();
     else if (line.startsWith('Email:')) p.email = line.split(':')[1].trim();

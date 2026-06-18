@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#d4af37">
+  <title>Preview - Booking Confirmed</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="app-header">
+    <img src="header2.jpg" alt="KC Legacy Valeting" class="header-banner">
+  </header>
+  <div class="container">
+    <!-- Success Screen (shown by default for preview) -->
+    <div id="success-screen" class="screen active">
+      <div class="success-icon">&#10003;</div>
+      <h2>Booking Confirmed!</h2>
+      <p style="color: var(--muted); margin-bottom: 10px;">Your booking has been received. Save your reference number.</p>
+      <div class="booking-ref" style="margin: 15px 0;">
+        <div class="ref-label">Booking Reference</div>
+        <div class="ref-number" id="ref-number" style="font-size: 2rem; letter-spacing: 3px;">A3B7C9D2</div>
+      </div>
+      <p style="color: #888; font-size: 0.85rem; margin: 10px 0 15px; padding: 0 20px; text-align: center;">
+        We'll message you here with updates. Tap below to view your messages and booking status.
+      </p>
+      <button id="check-status-btn" class="btn-gold" style="width: 80%; margin-bottom: 10px;">VIEW MESSAGES &amp; STATUS</button>
+      <button id="new-booking-btn" class="btn-outline" style="width: 80%;">Make Another Booking</button>
+      <p class="countdown-text" style="color: #555; font-size: 0.8rem; margin-top: 15px;">Auto-return in <span id="countdown">10</span>s</p>
+    </div>
+  </div>
+</body>
+</html>

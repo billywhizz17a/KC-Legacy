@@ -199,7 +199,7 @@ def create_quote_request():
         quote_content = f"""=============================================
              KC LEGACY VALETING - QUOTE REQUEST
 =============================================
-Quote ID: {booking_id}
+Booking ID: {booking_id}
 Request Date: {datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
 ----------------------------------------------
 CUSTOMER INFORMATION:
