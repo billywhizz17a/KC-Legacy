@@ -495,3 +495,134 @@ textarea {
 .hidden {
   display: none !important;
 }
+
+/* ========================================
+   RESPONSIVE - Tablet & Desktop
+   ======================================== */
+@media (min-width: 768px) {
+  .container {
+    max-width: 720px;
+    padding: 24px 20px;
+  }
+
+  .header-banner {
+    max-width: 480px;
+  }
+
+  .intro h1 {
+    font-size: 2rem;
+  }
+
+  .intro p {
+    font-size: 1rem;
+  }
+
+  .section {
+    padding: 24px;
+  }
+
+  .form-group h2 {
+    font-size: 1.1rem;
+  }
+
+  .package-list {
+    flex-direction: row;
+    gap: 12px;
+  }
+
+  .package-card {
+    flex: 1;
+  }
+
+  .package-content {
+    flex-direction: column;
+    text-align: center;
+    padding: 18px 12px;
+  }
+
+  .package-title {
+    font-size: 1.1rem;
+  }
+
+  .package-price {
+    font-size: 1.4rem;
+    margin-top: 6px;
+  }
+
+  .addon-list {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+  }
+
+  .addon-card {
+    flex-direction: column;
+    text-align: center;
+    padding: 14px 10px;
+    font-size: 0.85rem;
+  }
+
+  .addon-card input {
+    margin-right: 0;
+    margin-bottom: 4px;
+  }
+
+  .addon-price {
+    font-size: 0.85rem;
+    margin-top: 4px;
+  }
+
+  .quote-amount {
+    font-size: 3rem;
+  }
+
+  .btn-gold, .btn-outline {
+    padding: 16px;
+    font-size: 1.05rem;
+  }
+
+  .check-booking-section {
+    padding: 24px;
+  }
+
+  .check-result {
+    padding: 20px;
+  }
+
+  .check-details {
+    max-height: 300px;
+    font-size: 0.85rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .container {
+    max-width: 900px;
+    padding: 30px 24px;
+  }
+
+  .header-banner {
+    max-width: 600px;
+  }
+
+  .intro h1 {
+    font-size: 2.4rem;
+  }
+
+  .section {
+    padding: 28px;
+  }
+
+  .addon-list {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .quote-amount {
+    font-size: 3.5rem;
+  }
+}
+
+@media (min-width: 1440px) {
+  .container {
+    max-width: 1000px;
+  }
+}

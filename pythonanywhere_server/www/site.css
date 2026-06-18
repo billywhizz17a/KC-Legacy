@@ -678,6 +678,12 @@ body {
 .hidden { display: none !important; }
 
 /* Responsive */
+@media (max-width: 1200px) {
+  .gallery-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
 @media (max-width: 900px) {
   .sidebar {
     position: relative;
@@ -700,5 +706,67 @@ body {
   .package-select-grid { grid-template-columns: 1fr; }
   .addon-select-grid { grid-template-columns: 1fr; }
   .qr-grid { flex-direction: column; gap: 20px; }
+  .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 768px) {
+  .main-content {
+    padding: 16px 12px;
+  }
+  .hero-title { font-size: 2rem; letter-spacing: 3px; }
+  .hero-subtitle { font-size: 1rem; letter-spacing: 2px; }
+  .hero-tagline { font-size: 0.95rem; }
+  .gold-header { font-size: 1.6rem; }
+  .subtitle { font-size: 1rem; margin-bottom: 24px; }
+  .section-header { font-size: 1.3rem; }
+  .booking-form { padding: 20px 16px; }
+  .promise-box { padding: 18px; }
+  .promise-box p { font-size: 0.9rem; }
   .gallery-grid { grid-template-columns: 1fr; }
+  .check-form-site {
+    flex-direction: column;
+  }
+  .check-form-site button {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .main-content {
+    padding: 12px 8px;
+  }
+  .hero-banner { height: 30vh; min-height: 180px; }
+  .hero-title { font-size: 1.6rem; letter-spacing: 2px; }
+  .hero-subtitle { font-size: 0.85rem; letter-spacing: 1px; }
+  .hero-tagline { font-size: 0.85rem; letter-spacing: 1px; }
+  .gold-header { font-size: 1.3rem; }
+  .subtitle { font-size: 0.9rem; }
+  .sidebar-logo h2 { font-size: 1.2rem; }
+  .nav-item { font-size: 0.85rem; padding: 10px 12px; }
+  .booking-form { padding: 16px 12px; }
+  .luxury-card { padding: 18px; }
+  .luxury-card h3 { font-size: 1.1rem; }
+  .card-price { font-size: 1.3rem; }
+  .form-field input,
+  .form-field textarea { font-size: 0.9rem; padding: 10px 12px; }
+  .btn-gold-site { padding: 12px 20px; font-size: 0.95rem; }
+  .quote-amount-site { font-size: 2rem; }
+}
+
+@media (min-width: 1600px) {
+  .main-content {
+    padding: 40px 60px;
+  }
+  .package-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+  .addon-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  .gallery-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  .hero-title { font-size: 5rem; }
+  .hero-subtitle { font-size: 1.8rem; }
 }

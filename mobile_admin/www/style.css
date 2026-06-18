@@ -27,7 +27,7 @@ html, body {
   width: 100%;
   background: var(--bg);
   color: var(--text);
-  overflow: hidden;
+  overflow-x: hidden;
   touch-action: manipulation;
 }
 
@@ -919,4 +919,129 @@ html, body {
 ::-webkit-scrollbar-thumb {
   background: var(--gold);
   border-radius: 4px;
+}
+
+/* ========================================
+   RESPONSIVE - Tablet & Desktop
+   ======================================== */
+@media (min-width: 768px) {
+  .app-header {
+    padding: 16px 24px;
+  }
+
+  .header-title {
+    font-size: 1.6rem;
+  }
+
+  .login-box {
+    max-width: 400px;
+  }
+
+  .logo-text {
+    font-size: 2.6rem;
+  }
+
+  .stats-row {
+    padding: 16px 24px;
+    gap: 16px;
+  }
+
+  .stat-card {
+    padding: 20px;
+  }
+
+  .stat-number {
+    font-size: 2.2rem;
+  }
+
+  .tab-bar {
+    padding: 0 24px;
+  }
+
+  .tab-btn {
+    font-size: 1rem;
+    padding: 14px;
+  }
+
+  .tab-panel {
+    padding: 0 24px 80px;
+  }
+
+  .item-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  .booking-card {
+    margin-bottom: 0;
+  }
+
+  .search-bar input {
+    font-size: 1rem;
+  }
+
+  .modal-content {
+    max-width: 600px;
+  }
+
+  .calendar-weekdays span {
+    font-size: 0.85rem;
+  }
+
+  .cal-day {
+    min-height: 64px;
+  }
+
+  .cal-day .day-num {
+    font-size: 1rem;
+  }
+
+  .live-datetime {
+    font-size: 1.3rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .app-header {
+    padding: 16px 32px;
+  }
+
+  .header-title {
+    font-size: 1.8rem;
+  }
+
+  .stats-row {
+    padding: 16px 32px;
+  }
+
+  .tab-bar {
+    padding: 0 32px;
+  }
+
+  .tab-panel {
+    padding: 0 32px 80px;
+  }
+
+  .item-list {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .modal-content {
+    max-width: 700px;
+  }
+
+  .cal-day {
+    min-height: 80px;
+  }
+}
+
+@media (min-width: 1440px) {
+  .item-list {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .modal-content {
+    max-width: 800px;
+  }
 }
