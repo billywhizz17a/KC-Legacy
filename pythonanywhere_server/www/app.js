@@ -306,6 +306,20 @@ async function checkBooking() {
   }
 }
 
+// ── Clear All Bookings ──
+function clearBookings() {
+  if (!confirm('Clear all saved bookings? This will remove your references so you can start fresh.')) return;
+  localStorage.removeItem('kc_my_bookings');
+  localStorage.removeItem('kc_last_booking_ref');
+  $('check-ref').value = '';
+  $('check-result').classList.add('hidden');
+  $('check-details').textContent = '';
+  $('check-responses').innerHTML = '';
+  loadSavedBookings();
+  showMsg('check-msg', 'All bookings cleared. You can create a new booking above.', 'success');
+  $('booking-form').scrollIntoView({ behavior: 'smooth' });
+}
+
 // ── Init ──
 function init() {
   // Set min date to today
@@ -317,6 +331,7 @@ function init() {
   $('booking-form').addEventListener('submit', submitBooking);
   $('new-booking-btn').addEventListener('click', resetForm);
   $('check-btn').addEventListener('click', checkBooking);
+  $('clear-bookings-btn').addEventListener('click', clearBookings);
   $('check-ref').addEventListener('keydown', e => {
     if (e.key === 'Enter') checkBooking();
   });
