@@ -11,6 +11,8 @@ import os
 import json
 import uuid
 import datetime
+import io
+import base64
 import urllib.request
 from flask import Flask, jsonify, send_file, request, send_from_directory, abort, Response
 from flask_cors import CORS
@@ -22,46 +24,30 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 TEXT_UPLOADS_DIR = os.path.join(BASE_DIR, "uploads", "text")
 IMAGE_UPLOADS_DIR = os.path.join(BASE_DIR, "uploads", "images")
 RESPONSES_DIR = os.path.join(BASE_DIR, "uploads", "responses")
-# Static customer website files (index.html, app.js, style.css, etc.)
-# Upload these to /home/kclegeacy/www/ via PythonAnywhere Files tab
-WWW_DIR = "/home/kclegeacy/www"
+# Static customer website files (index.html, app.js, style.css, site.html, etc.)
+# On PythonAnywhere: /home/kclegeacy/www
+# Locally: use the www folder in this directory
+if os.path.exists("/home/kclegeacy/www"):
+    WWW_DIR = "/home/kclegeacy/www"
+else:
+    WWW_DIR = os.path.join(BASE_DIR, "www")
 
 os.makedirs(TEXT_UPLOADS_DIR, exist_ok=True)
 os.makedirs(IMAGE_UPLOADS_DIR, exist_ok=True)
 os.makedirs(RESPONSES_DIR, exist_ok=True)
 
 
-# ── Streamlit Proxy (main website) ──
-STREAMLIT_URL = "http://127.0.0.1:8501"
-
-def proxy_to_streamlit(path=""):
-    """Reverse-proxy requests to the Streamlit app running on localhost:8501."""
-    url = f"{STREAMLIT_URL}/{path}"
-    headers = {}
-    for key, val in request.headers:
-        if key.lower() not in ('host', 'content-length'):
-            headers[key] = val
-    req_data = request.get_data() if request.method != 'GET' else None
-    req = urllib.request.Request(url, data=req_data, headers=headers, method=request.method)
-    try:
-        with urllib.request.urlopen(req, timeout=30) as resp:
-            content = resp.read()
-            resp_headers = dict(resp.headers)
-            return Response(content, status=resp.status, headers={
-                k: v for k, v in resp_headers.items()
-                if k.lower() not in ('transfer-encoding', 'connection')
-            })
-    except Exception:
-        return Response(
-            "<h2>Website is starting up...</h2><p>The KC Legacy site will be back in a moment.</p>",
-            status=502,
-            headers={"Content-Type": "text/html"}
-        )
-
-
+# ── Main Website (Flask-served, replaces Streamlit) ──
 @app.route("/", methods=["GET"])
 def home():
-    return proxy_to_streamlit("")
+    """Serve the main KC Legacy website (gallery, packages, booking)."""
+    site_path = os.path.join(WWW_DIR, "site.html")
+    if os.path.exists(site_path):
+        return send_from_directory(WWW_DIR, "site.html")
+    return jsonify({
+        "service": "KC Legacy Valeting",
+        "message": "Website not found. Upload site.html to the www folder."
+    }), 404
 
 
 @app.route("/booking", methods=["GET"])
@@ -78,7 +64,7 @@ def booking_page():
 
 @app.route("/<path:filename>", methods=["GET"])
 def serve_static(filename):
-    """Serve customer website assets (app.js, style.css, images, manifest, etc.)."""
+    """Serve website assets (site.js, site.css, app.js, style.css, images, APK, etc.)."""
     # Never hijack API routes
     if filename.startswith("api/"):
         abort(404)
@@ -407,6 +393,33 @@ def get_banner():
         if os.path.exists(path):
             return send_file(path)
     return jsonify({"error": "No banner image found"}), 404
+
+
+# ── QR Codes ──
+@app.route("/api/qr/<target>", methods=["GET"])
+def get_qr_code(target):
+    """Generate QR code for Android APK or website URL."""
+    try:
+        import qrcode
+        from PIL import Image as PILImage
+        if target == "android":
+            url = "https://kclegeacy.pythonanywhere.com/app-debug.apk"
+        elif target == "web":
+            url = "https://kclegeacy.pythonanywhere.com"
+        else:
+            return jsonify({"error": "Invalid QR target. Use 'android' or 'web'."}), 400
+        qr = qrcode.QRCode(version=1, box_size=5, border=2)
+        qr.add_data(url)
+        qr.make(fit=True)
+        img = qr.make_image(fill_color="black", back_color="white")
+        buf = io.BytesIO()
+        img.save(buf, format="PNG")
+        buf.seek(0)
+        return send_file(buf, mimetype="image/png")
+    except ImportError:
+        return jsonify({"error": "qrcode library not installed"}), 500
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 
 if __name__ == "__main__":
