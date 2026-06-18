@@ -337,25 +337,25 @@ body {
 /* Promise Box */
 .promise-box {
   max-width: 900px;
-  margin: 40px auto;
-  padding: 30px;
+  margin: 30px auto;
+  padding: 22px;
   background-color: #111;
   border: 2px solid var(--gold);
   border-radius: 12px;
 }
 .promise-title {
   color: var(--gold);
-  font-size: 1.2rem;
+  font-size: 1.05rem;
   font-weight: 700;
-  margin-bottom: 15px;
+  margin-bottom: 10px;
   text-align: center;
 }
 .promise-box p {
-  color: #ccc;
-  font-size: 1rem;
-  line-height: 1.8;
+  color: #bbb;
+  font-size: 0.82rem;
+  line-height: 1.5;
   text-align: center;
-  margin-top: 15px;
+  margin-top: 10px;
 }
 
 /* QR Box */
