@@ -71,6 +71,16 @@ function updateQuote() {
   const quote = calculateQuote();
   $('quote-price').textContent = quote.total;
   $('quote-breakdown').innerHTML = quote.breakdown.join('<br>');
+  // Flash the quote box to show it updated
+  const box = document.querySelector('.quote-box');
+  if (box) {
+    box.style.transition = 'none';
+    box.style.background = 'rgba(212, 175, 55, 0.25)';
+    setTimeout(() => {
+      box.style.transition = 'background 0.4s';
+      box.style.background = 'rgba(212, 175, 55, 0.05)';
+    }, 50);
+  }
 }
 
 // ── Form Handling ──

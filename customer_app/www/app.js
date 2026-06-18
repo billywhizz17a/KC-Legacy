@@ -71,6 +71,16 @@ function updateQuote() {
   const quote = calculateQuote();
   $('quote-price').textContent = quote.total;
   $('quote-breakdown').innerHTML = quote.breakdown.join('<br>');
+  // Flash the quote box to show it updated
+  const box = document.querySelector('.quote-box');
+  if (box) {
+    box.style.transition = 'none';
+    box.style.background = 'rgba(212, 175, 55, 0.25)';
+    setTimeout(() => {
+      box.style.transition = 'background 0.4s';
+      box.style.background = 'rgba(212, 175, 55, 0.05)';
+    }, 50);
+  }
 }
 
 // ── Form Handling ──
@@ -134,6 +144,17 @@ async function submitBooking(e) {
       $('success-screen').classList.remove('hidden');
       $('success-screen').classList.add('active');
       $('ref-number').textContent = result.bookingId || '---';
+
+      // Save booking reference to localStorage so customer can retrieve messages later
+      if (result.bookingId) {
+        const saved = JSON.parse(localStorage.getItem('kc_my_bookings') || '[]');
+        if (!saved.includes(result.bookingId)) {
+          saved.unshift(result.bookingId);
+          localStorage.setItem('kc_my_bookings', JSON.stringify(saved));
+        }
+        // Auto-populate the check-ref field
+        $('check-ref').value = result.bookingId;
+      }
 
       // 10-second countdown to auto-return
       let seconds = 10;
@@ -253,6 +274,12 @@ function init() {
   document.querySelectorAll('.addon-card input').forEach(el => {
     el.addEventListener('change', updateQuote);
   });
+
+  // Auto-populate check-ref from last booking
+  const savedBookings = JSON.parse(localStorage.getItem('kc_my_bookings') || '[]');
+  if (savedBookings.length > 0) {
+    $('check-ref').value = savedBookings[0];
+  }
 
   // Initial quote
   updateQuote();
