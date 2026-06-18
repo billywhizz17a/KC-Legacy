@@ -4,7 +4,7 @@
  */
 
 // ── Configuration ──
-let API_BASE = localStorage.getItem('kc_api_url') || 'https://kclegeacy.pythonanywhere.com';
+let API_BASE = localStorage.getItem('kc_api_url') || 'https://KCLegacy.pythonanywhere.com';
 
 // Admin entry name hash (SHA-256 of 'kclvs417xh')
 const ADMIN_HASH = '5641858a79c6ef95b1070f43449a3148de78b61016c659de30fcb1d6ae48efa2';

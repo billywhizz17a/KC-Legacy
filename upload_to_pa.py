@@ -22,7 +22,7 @@ with open(env_path, 'r') as f:
             key, val = line.split('=', 1)
             config[key.strip()] = val.strip()
 
-username = config.get('PA_USERNAME', 'kclegeacy')
+username = config.get('PA_USERNAME', 'KCLegacy')
 api_key = config.get('API_KEY', '')
 
 if not api_key:
@@ -116,4 +116,4 @@ if resp.status_code in (200, 202):
 else:
     print(f"  Reload: HTTP {resp.status_code} - {resp.text[:200]}")
 
-print("\nDone! Check https://kclegeacy.pythonanywhere.com")
+print("\nDone! Check https://KCLegacy.pythonanywhere.com")

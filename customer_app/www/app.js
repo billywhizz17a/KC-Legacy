@@ -4,7 +4,7 @@
  */
 
 // ── Configuration ──
-const API_BASE = 'https://kclegeacy.pythonanywhere.com';
+const API_BASE = 'https://KCLegacy.pythonanywhere.com';
 
 // ── Utility ──
 function $(id) { return document.getElementById(id); }

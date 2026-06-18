@@ -31,6 +31,21 @@ function showPage(pageName) {
   if (nav) nav.classList.add('active');
   if (pageName === 'gallery') loadGallery();
   window.scrollTo(0, 0);
+
+  // Auto-close sidebar on mobile
+  closeSidebar();
+}
+
+function toggleSidebar() {
+  $('sidebar').classList.toggle('active');
+  $('sidebar-overlay').classList.toggle('active');
+  document.body.style.overflow = $('sidebar').classList.contains('active') ? 'hidden' : '';
+}
+
+function closeSidebar() {
+  $('sidebar').classList.remove('active');
+  $('sidebar-overlay').classList.remove('active');
+  document.body.style.overflow = '';
 }
 
 document.querySelectorAll('.nav-item').forEach(item => {
@@ -39,6 +54,10 @@ document.querySelectorAll('.nav-item').forEach(item => {
     showPage(item.dataset.page);
   });
 });
+
+// Mobile menu toggle
+$('menu-toggle').addEventListener('click', toggleSidebar);
+$('sidebar-overlay').addEventListener('click', closeSidebar);
 
 // ── Quote Calculator ──
 function calculateQuote() {
@@ -229,7 +248,7 @@ async function loadGallery() {
     const data = await res.json();
     const images = data.images || [];
     // Filter out non-photos
-    const excluded = ['facebook_logo', 'favicon', 'header2', 'kclegacy', 'product', 'kclecy'];
+    const excluded = ['facebook_logo', 'favicon', 'header2', 'KCLegacy', 'product', 'kclecy'];
     const realPhotos = images.filter(img => {
       const fn = img.filename || '';
       const dotIdx = fn.lastIndexOf('.');

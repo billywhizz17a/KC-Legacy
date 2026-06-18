@@ -23,10 +23,10 @@ TEXT_UPLOADS_DIR = os.path.join(BASE_DIR, "uploads", "text")
 IMAGE_UPLOADS_DIR = os.path.join(BASE_DIR, "uploads", "images")
 RESPONSES_DIR = os.path.join(BASE_DIR, "uploads", "responses")
 # Static customer website files (index.html, app.js, style.css, site.html, etc.)
-# On PythonAnywhere: /home/kclegeacy/www
+# On PythonAnywhere: /home/KCLegacy/www
 # Locally: use the www folder in this directory
-if os.path.exists("/home/kclegeacy/www"):
-    WWW_DIR = "/home/kclegeacy/www"
+if os.path.exists("/home/KCLegacy/www"):
+    WWW_DIR = "/home/KCLegacy/www"
 else:
     WWW_DIR = os.path.join(BASE_DIR, "www")
 
@@ -400,9 +400,9 @@ def get_qr_code(target):
     try:
         import qrcode
         if target == "android":
-            url = "https://kclegeacy.pythonanywhere.com/Booking.apk"
+            url = "https://KCLegacy.pythonanywhere.com/Booking.apk"
         elif target == "web":
-            url = "https://kclegeacy.pythonanywhere.com"
+            url = "https://KCLegacy.pythonanywhere.com"
         else:
             return jsonify({"error": "Invalid QR target. Use 'android' or 'web'."}), 400
         qr = qrcode.QRCode(version=1, box_size=5, border=2)

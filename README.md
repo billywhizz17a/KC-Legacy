@@ -2,7 +2,7 @@
 
 Premium automotive valeting & detailing business platform — Flask backend, customer booking app, and admin dashboard.
 
-Live site: <https://kclegeacy.pythonanywhere.com>
+Live site: <https://KCLegacy.pythonanywhere.com>
 
 ---
 
@@ -55,12 +55,12 @@ kc_legacy_valeting/
 
 ### Customer App (`customer_app/`)
 - Capacitor Android app wrapping the mobile booking page
-- Package: `com.kclegacy.customer`
-- Connects to `https://kclegeacy.pythonanywhere.com`
+- Package: `com.KCLegacy.customer`
+- Connects to `https://KCLegacy.pythonanywhere.com`
 
 ### Admin App (`mobile_admin/`)
 - Capacitor Android PWA for managing bookings
-- Package: `com.kclegacy.admin`
+- Package: `com.KCLegacy.admin`
 - Login with admin entry name, view bookings, calendar, send responses
 
 ---
