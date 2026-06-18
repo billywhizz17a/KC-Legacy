@@ -12,7 +12,7 @@ import json
 import uuid
 import datetime
 import io
-from flask import Flask, jsonify, send_file, request, send_from_directory, abort, Response
+from flask import Flask, jsonify, send_file, request, send_from_directory, abort
 from flask_cors import CORS
 
 app = Flask(__name__)
@@ -330,7 +330,7 @@ def get_booking_by_ref(booking_id):
                 try:
                     with open(resp_file, "r", encoding="utf-8") as rf:
                         responses = json.load(rf)
-                except:
+                except Exception:
                     pass
 
             return jsonify({
@@ -399,7 +399,6 @@ def get_qr_code(target):
     """Generate QR code for Android APK or website URL."""
     try:
         import qrcode
-        from PIL import Image as PILImage
         if target == "android":
             url = "https://kclegeacy.pythonanywhere.com/Booking.apk"
         elif target == "web":

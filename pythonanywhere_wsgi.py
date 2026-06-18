@@ -22,7 +22,7 @@ if PROJECT_PATH not in sys.path:
 os.chdir(PROJECT_PATH)
 
 # Diagnostic: try importing dependencies
-required = ['flask']
+required = ['flask', 'flask_cors']
 for module in required:
     try:
         __import__(module)

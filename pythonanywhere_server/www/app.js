@@ -21,33 +21,6 @@ function escapeHtml(str) {
   return div.innerHTML;
 }
 
-// ── API ──
-async function apiPost(endpoint, data) {
-  try {
-    const res = await fetch(`${API_BASE}${endpoint}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data)
-    });
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    return await res.json();
-  } catch (e) {
-    console.error('API POST error:', e);
-    return { error: e.message };
-  }
-}
-
-async function apiGet(endpoint) {
-  try {
-    const res = await fetch(`${API_BASE}${endpoint}`);
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    return await res.json();
-  } catch (e) {
-    console.error('API GET error:', e);
-    return { error: e.message };
-  }
-}
-
 // ── Quote Calculator ──
 function calculateQuote() {
   const packageEl = document.querySelector('input[name="package"]:checked');
