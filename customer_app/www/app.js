@@ -83,6 +83,68 @@ function updateQuote() {
   }
 }
 
+// ── Request Quote via Messaging ──
+async function requestQuote() {
+  // First update the displayed quote
+  updateQuote();
+
+  const name = $('cust-name').value.trim();
+  const phone = $('cust-phone').value.trim();
+
+  if (!name || !phone) {
+    showMsg('form-msg', 'Please enter your name and phone number to request a quote.', 'error');
+    return;
+  }
+
+  showMsg('form-msg', 'Sending quote request...', '');
+
+  const packageEl = document.querySelector('input[name="package"]:checked');
+  const [pkgName, pkgPrice] = packageEl.value.split('|');
+  const addons = [];
+  document.querySelectorAll('.addon-card input:checked').forEach(cb => {
+    const [aName, aPrice] = cb.value.split('|');
+    addons.push({ name: aName, price: parseInt(aPrice, 10) });
+  });
+
+  const quoteData = {
+    name: name,
+    phone: phone,
+    carMake: $('car-make').value.trim(),
+    package: pkgName,
+    packagePrice: parseInt(pkgPrice, 10),
+    addons: addons,
+    totalPrice: calculateQuote().total
+  };
+
+  try {
+    const res = await fetch(`${API_BASE}/api/quote`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(quoteData)
+    });
+
+    if (res.ok) {
+      const result = await res.json();
+      showMsg('form-msg', `Quote request sent! Your reference is ${result.bookingId}. Check Messages & Status for a reply.`, 'success');
+
+      // Save quote reference to localStorage
+      if (result.bookingId) {
+        const saved = JSON.parse(localStorage.getItem('kc_my_bookings') || '[]');
+        if (!saved.includes(result.bookingId)) {
+          saved.unshift(result.bookingId);
+          localStorage.setItem('kc_my_bookings', JSON.stringify(saved));
+        }
+        $('check-ref').value = result.bookingId;
+      }
+    } else {
+      const err = await res.json();
+      showMsg('form-msg', 'Error: ' + (err.error || `HTTP ${res.status}`), 'error');
+    }
+  } catch (e) {
+    showMsg('form-msg', 'Error: ' + e.message + '. Check your internet connection.', 'error');
+  }
+}
+
 // ── Form Handling ──
 function getFormData() {
   const packageEl = document.querySelector('input[name="package"]:checked');
@@ -259,7 +321,7 @@ function init() {
   $('booking-date').min = today;
 
   // Event listeners
-  $('quote-btn').addEventListener('click', updateQuote);
+  $('quote-btn').addEventListener('click', requestQuote);
   $('booking-form').addEventListener('submit', submitBooking);
   $('new-booking-btn').addEventListener('click', resetForm);
   $('check-btn').addEventListener('click', checkBooking);

@@ -169,6 +169,69 @@ ESTIMATED TOTAL: £{total_price}
         return jsonify({"error": str(e)}), 500
 
 
+# ── Quote Request ──
+@app.route("/api/quote", methods=["POST"])
+def create_quote_request():
+    try:
+        data = request.get_json() or {}
+
+        name = data.get("name", "").strip()
+        phone = data.get("phone", "").strip()
+        car_make = data.get("carMake", "").strip()
+        package = data.get("package", "")
+        package_price = data.get("packagePrice", 0)
+        addons = data.get("addons", [])
+        estimated_total = data.get("totalPrice", package_price)
+
+        if not name or not phone:
+            return jsonify({"error": "Name and phone are required for a quote"}), 400
+
+        booking_id = str(uuid.uuid4())[:8]
+        filename = f"quote_{booking_id}_{name.replace(' ', '_')}.txt"
+        file_path = os.path.join(TEXT_UPLOADS_DIR, filename)
+
+        def _format_addon(a):
+            if isinstance(a, dict):
+                return f"  - {a.get('name', 'Add-on')} (+£{a.get('price', 0)})"
+            return f"  - {a}"
+        addons_str = "\n".join([_format_addon(a) for a in addons]) if addons else "  None"
+
+        quote_content = f"""=============================================
+             KC LEGACY VALETING - QUOTE REQUEST
+=============================================
+Quote ID: {booking_id}
+Request Date: {datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
+----------------------------------------------
+CUSTOMER INFORMATION:
+Name: {name}
+Phone: {phone}
+
+VEHICLE & PACKAGE DETAILS:
+Vehicle: {car_make or 'Not specified'}
+Selected Package: {package} (From £{package_price})
+
+ADD-ONS SELECTED:
+{addons_str}
+
+ESTIMATED TOTAL: £{estimated_total}
+----------------------------------------------
+STATUS: QUOTE REQUEST - Awaiting admin response with final price
+=============================================
+"""
+        with open(file_path, "w", encoding="utf-8") as f:
+            f.write(quote_content)
+
+        return jsonify({
+            "success": True,
+            "bookingId": booking_id,
+            "filename": filename,
+            "message": "Quote request submitted"
+        })
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
 @app.route("/api/bookings/<filename>", methods=["DELETE"])
 def delete_booking(filename):
     filepath = os.path.join(TEXT_UPLOADS_DIR, filename)
