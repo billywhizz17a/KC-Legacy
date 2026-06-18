@@ -12,8 +12,6 @@ import json
 import uuid
 import datetime
 import io
-import base64
-import urllib.request
 from flask import Flask, jsonify, send_file, request, send_from_directory, abort, Response
 from flask_cors import CORS
 
@@ -403,7 +401,7 @@ def get_qr_code(target):
         import qrcode
         from PIL import Image as PILImage
         if target == "android":
-            url = "https://kclegeacy.pythonanywhere.com/app-debug.apk"
+            url = "https://kclegeacy.pythonanywhere.com/Booking.apk"
         elif target == "web":
             url = "https://kclegeacy.pythonanywhere.com"
         else:

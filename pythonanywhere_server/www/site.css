@@ -22,29 +22,69 @@ body {
   min-height: 100vh;
 }
 
-/* Header Banner */
-.header-banner {
-  position: fixed;
+/* Hero Banner */
+.hero-banner {
+  position: relative;
+  width: 100%;
+  height: 50vh;
+  min-height: 300px;
+  overflow: hidden;
+  background: #111;
+}
+.hero-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+}
+.hero-overlay {
+  position: absolute;
   top: 0;
   left: 0;
   right: 0;
-  z-index: 100;
-  height: 80px;
-  overflow: hidden;
-  background: #111;
-  border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+  bottom: 0;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.6) 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 20px;
 }
-.header-banner img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center;
+.hero-title {
+  color: var(--gold);
+  font-size: 4rem;
+  font-weight: 900;
+  letter-spacing: 8px;
+  margin: 0;
+  text-shadow: 2px 2px 8px rgba(0,0,0,0.8);
+}
+.hero-subtitle {
+  color: #fff;
+  font-size: 1.5rem;
+  text-transform: uppercase;
+  letter-spacing: 6px;
+  margin-top: 10px;
+  text-shadow: 1px 1px 4px rgba(0,0,0,0.8);
+}
+.hero-line {
+  width: 80px;
+  height: 3px;
+  background-color: var(--gold);
+  margin: 20px auto;
+}
+.hero-tagline {
+  color: #ddd;
+  font-size: 1.1rem;
+  letter-spacing: 2px;
+  max-width: 500px;
+  text-shadow: 1px 1px 4px rgba(0,0,0,0.8);
 }
 
 /* Sidebar */
 .sidebar {
   position: fixed;
-  top: 80px;
+  top: 0;
   left: 0;
   bottom: 0;
   width: 300px;
@@ -52,6 +92,7 @@ body {
   border-right: 2px solid rgba(212, 175, 55, 0.15);
   overflow-y: auto;
   padding: 0;
+  z-index: 200;
 }
 
 .sidebar-logo {
@@ -186,10 +227,10 @@ body {
 /* Main Content */
 .main-content {
   margin-left: 300px;
-  margin-top: 80px;
+  margin-top: 0;
   padding: 30px 40px;
   flex: 1;
-  min-height: calc(100vh - 80px);
+  min-height: 100vh;
 }
 
 /* Pages */
@@ -650,7 +691,9 @@ body {
     margin-top: 0;
     padding: 20px;
   }
-  .header-banner { position: relative; height: 60px; }
+  .hero-banner { height: 35vh; min-height: 200px; }
+  .hero-title { font-size: 2.5rem; letter-spacing: 4px; }
+  .hero-subtitle { font-size: 1.1rem; letter-spacing: 3px; }
   .package-grid { grid-template-columns: 1fr; }
   .addon-grid { grid-template-columns: 1fr; }
   .form-row-2 { grid-template-columns: 1fr; }

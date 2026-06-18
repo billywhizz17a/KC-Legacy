@@ -231,7 +231,9 @@ async function loadGallery() {
     // Filter out non-photos
     const excluded = ['facebook_logo', 'favicon', 'header2', 'kclegacy', 'product', 'kclecy'];
     const realPhotos = images.filter(img => {
-      const base = (img.filename || '').rsplit('.', 1)[0].toLowerCase();
+      const fn = img.filename || '';
+      const dotIdx = fn.lastIndexOf('.');
+      const base = dotIdx > 0 ? fn.substring(0, dotIdx).toLowerCase() : fn.toLowerCase();
       return !excluded.some(ex => base.includes(ex));
     });
     if (realPhotos.length === 0) {

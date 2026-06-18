@@ -74,9 +74,11 @@ async function checkAuth() {
     document.getElementById('api-url-input').value = savedUrl;
     API_BASE = savedUrl;
   }
-  // Auto-login for preview (bypass login screen)
-  isAuthenticated = true;
-  showApp();
+  const savedAuth = localStorage.getItem('kc_admin_auth');
+  if (savedAuth === 'true') {
+    isAuthenticated = true;
+    showApp();
+  }
 }
 
 async function doLogin() {
