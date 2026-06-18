@@ -12,12 +12,18 @@ from collections import defaultdict
 from PIL import Image
 
 # Define Storage Folders
-BASE_DIR = r"c:\Users\chris\CascadeProjects\kc_legacy_valeting"
+if os.path.exists(r"c:\Users\chris\CascadeProjects\kc_legacy_valeting"):
+    BASE_DIR = r"c:\Users\chris\CascadeProjects\kc_legacy_valeting"
+else:
+    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 TEXT_UPLOADS_DIR = os.path.join(BASE_DIR, "uploads", "text")
 IMAGE_UPLOADS_DIR = os.path.join(BASE_DIR, "uploads", "images")
 
-# API Server URL (PythonAnywhere)
-API_BASE_URL = "https://kclegeacy.pythonanywhere.com"
+# API Server URL (PythonAnywhere) - use localhost when running on server
+if os.path.exists("/home/kclegeacy"):
+    API_BASE_URL = "http://127.0.0.1:5000"
+else:
+    API_BASE_URL = "https://kclegeacy.pythonanywhere.com"
 
 def send_booking_to_api(booking_data):
     """Send booking to PythonAnywhere (PRIMARY system)."""

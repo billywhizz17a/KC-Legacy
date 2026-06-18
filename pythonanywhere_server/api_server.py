@@ -11,7 +11,8 @@ import os
 import json
 import uuid
 import datetime
-from flask import Flask, jsonify, send_file, request, send_from_directory, abort
+import urllib.request
+from flask import Flask, jsonify, send_file, request, send_from_directory, abort, Response
 from flask_cors import CORS
 
 app = Flask(__name__)
@@ -30,17 +31,49 @@ os.makedirs(IMAGE_UPLOADS_DIR, exist_ok=True)
 os.makedirs(RESPONSES_DIR, exist_ok=True)
 
 
-# ── Customer Website (served at root) ──
+# ── Streamlit Proxy (main website) ──
+STREAMLIT_URL = "http://127.0.0.1:8501"
+
+def proxy_to_streamlit(path=""):
+    """Reverse-proxy requests to the Streamlit app running on localhost:8501."""
+    url = f"{STREAMLIT_URL}/{path}"
+    headers = {}
+    for key, val in request.headers:
+        if key.lower() not in ('host', 'content-length'):
+            headers[key] = val
+    req_data = request.get_data() if request.method != 'GET' else None
+    req = urllib.request.Request(url, data=req_data, headers=headers, method=request.method)
+    try:
+        with urllib.request.urlopen(req, timeout=30) as resp:
+            content = resp.read()
+            resp_headers = dict(resp.headers)
+            return Response(content, status=resp.status, headers={
+                k: v for k, v in resp_headers.items()
+                if k.lower() not in ('transfer-encoding', 'connection')
+            })
+    except Exception:
+        return Response(
+            "<h2>Website is starting up...</h2><p>The KC Legacy site will be back in a moment.</p>",
+            status=502,
+            headers={"Content-Type": "text/html"}
+        )
+
+
 @app.route("/", methods=["GET"])
 def home():
+    return proxy_to_streamlit("")
+
+
+@app.route("/booking", methods=["GET"])
+def booking_page():
+    """Serve the mobile booking page at /booking"""
     index_path = os.path.join(WWW_DIR, "index.html")
     if os.path.exists(index_path):
         return send_from_directory(WWW_DIR, "index.html")
     return jsonify({
         "service": "KC Legacy Valeting",
-        "message": "Website files not found. Upload the customer_app/www files to the 'www' folder.",
-        "api_health": "/api/health"
-    })
+        "message": "Booking page not found. Upload www files."
+    }), 404
 
 
 @app.route("/<path:filename>", methods=["GET"])

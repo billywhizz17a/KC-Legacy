@@ -6,7 +6,7 @@ Username: kclegeacy
 import sys
 import os
 
-PROJECT_PATH = '/home/kclegeacy/kc_legacy_valeting'
+PROJECT_PATH = '/home/kclegeacy/kc_legacy_valeting/pythonanywhere_server'
 
 # Diagnostic: print to error log if path doesn't exist
 if not os.path.exists(PROJECT_PATH):
