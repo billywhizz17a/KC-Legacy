@@ -1,19 +1,19 @@
 """
 PythonAnywhere WSGI entry point for KC Legacy Valeting API
-Username: kclegacy
+Username: KCLegacy
 """
 
 import sys
 import os
 
-PROJECT_PATH = '/home/kclegacy/kc_legacy_valeting/pythonanywhere_server'
+PROJECT_PATH = '/home/KCLegacy/kc_legacy_valeting/pythonanywhere_server'
 
 # Diagnostic: print to error log if path doesn't exist
 if not os.path.exists(PROJECT_PATH):
     import logging
     logging.basicConfig(stream=sys.stderr, level=logging.ERROR)
     logging.error(f"PROJECT_PATH does not exist: {PROJECT_PATH}")
-    logging.error(f"Current directory contents: {os.listdir('/home/kclegacy') if os.path.exists('/home/kclegacy') else 'N/A'}")
+    logging.error(f"Current directory contents: {os.listdir('/home/KCLegacy') if os.path.exists('/home/KCLegacy') else 'N/A'}")
     raise FileNotFoundError(f"Project not found at {PROJECT_PATH}. Did you unzip kc_legacy_valeting.zip?")
 
 if PROJECT_PATH not in sys.path:
