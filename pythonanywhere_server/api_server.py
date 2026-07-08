@@ -419,8 +419,10 @@ def get_qr_code(target):
             url = "https://KCLegacy.pythonanywhere.com/Booking.apk"
         elif target == "web":
             url = "https://KCLegacy.pythonanywhere.com"
+        elif target == "ios":
+            url = "https://KCLegacy.pythonanywhere.com"
         else:
-            return jsonify({"error": "Invalid QR target. Use 'android' or 'web'."}), 400
+            return jsonify({"error": "Invalid QR target. Use 'android', 'ios', or 'web'."}), 400
         qr = qrcode.QRCode(version=1, box_size=5, border=2)
         qr.add_data(url)
         qr.make(fit=True)
