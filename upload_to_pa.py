@@ -22,7 +22,7 @@ with open(env_path, 'r') as f:
             key, val = line.split('=', 1)
             config[key.strip()] = val.strip()
 
-username = config.get('PA_USERNAME', 'KCLegacy')
+username = config.get('PA_USERNAME', 'kclegacy')
 api_key = config.get('API_KEY', '')
 
 if not api_key:
@@ -37,10 +37,23 @@ API = f"https://www.pythonanywhere.com/api/v0/user/{username}"
 headers = {"Authorization": f"Token {api_key}"}
 
 uploads = [
+    # www files
     (os.path.join(www_dir, 'site.html'), f'/home/{username}/www/site.html'),
     (os.path.join(www_dir, 'site.css'), f'/home/{username}/www/site.css'),
     (os.path.join(www_dir, 'site.js'), f'/home/{username}/www/site.js'),
+    (os.path.join(www_dir, 'app.js'), f'/home/{username}/www/app.js'),
+    (os.path.join(www_dir, 'index.html'), f'/home/{username}/www/index.html'),
+    (os.path.join(www_dir, 'style.css'), f'/home/{username}/www/style.css'),
+    (os.path.join(www_dir, 'packages.json'), f'/home/{username}/www/packages.json'),
+    (os.path.join(www_dir, 'manifest.json'), f'/home/{username}/www/manifest.json'),
+    (os.path.join(www_dir, 'download.html'), f'/home/{username}/www/download.html'),
+    (os.path.join(www_dir, 'icon-192.png'), f'/home/{username}/www/icon-192.png'),
+    (os.path.join(www_dir, 'icon-512.png'), f'/home/{username}/www/icon-512.png'),
+    (os.path.join(www_dir, 'header2.jpg'), f'/home/{username}/www/header2.jpg'),
+    # server files
     (os.path.join(server_dir, 'api_server.py'), f'/home/{username}/kc_legacy_valeting/pythonanywhere_server/api_server.py'),
+    (os.path.join(server_dir, 'requirements.txt'), f'/home/{username}/kc_legacy_valeting/pythonanywhere_server/requirements.txt'),
+    # WSGI
     (os.path.join(base, 'pythonanywhere_wsgi.py'), f'/var/www/{username}_pythonanywhere_com_wsgi.py'),
 ]
 
