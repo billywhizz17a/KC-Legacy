@@ -48,6 +48,54 @@ async function apiGet(endpoint) {
   }
 }
 
+// ── Live Packages Config ──
+async function loadPackages() {
+  try {
+    const res = await fetch(`${API_BASE}/api/packages`);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const config = await res.json();
+    renderPackages(config.packages || []);
+    renderAddons(config.addons || []);
+    // Re-bind event listeners for the dynamically created elements
+    document.querySelectorAll('input[name="package"]').forEach(el => {
+      el.addEventListener('change', updateQuote);
+    });
+    document.querySelectorAll('.addon-card input').forEach(el => {
+      el.addEventListener('change', updateQuote);
+    });
+    updateQuote();
+  } catch (e) {
+    console.error('Failed to load packages from server, using fallback:', e);
+  }
+}
+
+function renderPackages(packages) {
+  const container = document.querySelector('.package-list');
+  if (!container) return;
+  container.innerHTML = packages.map((pkg, i) => `
+    <label class="package-card">
+      <input type="radio" name="package" value="${escapeHtml(pkg.name)}|${pkg.fromPrice}"${i === 0 ? ' checked' : ''}>
+      <div class="package-content">
+        <div class="package-title">${escapeHtml(pkg.name)}</div>
+        <div class="package-sub">${escapeHtml(pkg.subtitle)}</div>
+        <div class="package-price">From &pound;${pkg.fromPrice}</div>
+      </div>
+    </label>
+  `).join('');
+}
+
+function renderAddons(addons) {
+  const container = document.querySelector('.addon-list');
+  if (!container) return;
+  container.innerHTML = addons.map(addon => `
+    <label class="addon-card">
+      <input type="checkbox" value="${escapeHtml(addon.name)}|${addon.price}">
+      <span>${escapeHtml(addon.name)}</span>
+      <span class="addon-price">+&pound;${addon.price}</span>
+    </label>
+  `).join('');
+}
+
 // ── Quote Calculator ──
 function calculateQuote() {
   const packageEl = document.querySelector('input[name="package"]:checked');
@@ -329,7 +377,7 @@ function init() {
     if (e.key === 'Enter') checkBooking();
   });
 
-  // Auto-update quote on package/addon change
+  // Auto-update quote on package/addon change (for fallback static elements)
   document.querySelectorAll('input[name="package"]').forEach(el => {
     el.addEventListener('change', updateQuote);
   });
@@ -345,6 +393,9 @@ function init() {
 
   // Initial quote
   updateQuote();
+
+  // Load live packages from server (overrides static HTML if successful)
+  loadPackages();
 }
 
 document.addEventListener('DOMContentLoaded', init);

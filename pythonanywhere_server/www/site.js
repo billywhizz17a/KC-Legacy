@@ -59,6 +59,70 @@ document.querySelectorAll('.nav-item').forEach(item => {
 $('menu-toggle').addEventListener('click', toggleSidebar);
 $('sidebar-overlay').addEventListener('click', closeSidebar);
 
+// ── Live Packages Config ──
+async function loadPackages() {
+  try {
+    const res = await fetch(`${API_BASE}/api/packages`);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const config = await res.json();
+    renderPackageCards(config.packages || []);
+    renderAddonCards(config.addons || []);
+    renderPackageSelect(config.packages || []);
+    renderAddonSelect(config.addons || []);
+    // Re-bind event listeners for the dynamically created elements
+    document.querySelectorAll('input[name="site-package"]').forEach(el => {
+      el.addEventListener('change', updateQuote);
+    });
+    document.querySelectorAll('.addon-select input').forEach(el => {
+      el.addEventListener('change', updateQuote);
+    });
+    updateQuote();
+  } catch (e) {
+    console.error('Failed to load packages from server, using fallback:', e);
+  }
+}
+
+function renderPackageCards(packages) {
+  const container = document.querySelector('.package-grid');
+  if (!container) return;
+  container.innerHTML = packages.map(pkg => `
+    <div class="luxury-card">
+      <h3>${escapeHtml(pkg.icon || '')} ${escapeHtml(pkg.name)} - ${escapeHtml(pkg.subtitle)}</h3>
+      <p class="card-sub">${escapeHtml(pkg.description || '')}</p>
+      <p class="card-price">${escapeHtml(pkg.priceText || '')}</p>
+      <div class="card-details">
+        <b>Includes:</b><br>
+        ${(pkg.features || []).map(f => `• ${escapeHtml(f)}`).join('<br>')}<br>
+        <br><b style="color:#d4af37;">✨ Add Ons Available Below</b>${pkg.footerNote ? `<br><br><i>${escapeHtml(pkg.footerNote)}</i>` : ''}
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderAddonCards(addons) {
+  const container = document.querySelector('.addon-grid');
+  if (!container) return;
+  container.innerHTML = addons.map(addon => `
+    <div class="addon-card"><h4>${escapeHtml(addon.icon || '')} ${escapeHtml(addon.name)}</h4><p class="addon-price">${escapeHtml(addon.priceLabel || '')}</p><p class="addon-desc">${escapeHtml(addon.description || '')}</p></div>
+  `).join('');
+}
+
+function renderPackageSelect(packages) {
+  const container = document.querySelector('.package-select-grid');
+  if (!container) return;
+  container.innerHTML = packages.map((pkg, i) => `
+    <label class="package-select"><input type="radio" name="site-package" value="${escapeHtml(pkg.name)}|${pkg.fromPrice}"${i === 0 ? ' checked' : ''}><span>${escapeHtml(pkg.name)} - ${escapeHtml(pkg.subtitle)} (from £${pkg.fromPrice})</span></label>
+  `).join('');
+}
+
+function renderAddonSelect(addons) {
+  const container = document.querySelector('.addon-select-grid');
+  if (!container) return;
+  container.innerHTML = addons.map(addon => `
+    <label class="addon-select"><input type="checkbox" value="${escapeHtml(addon.name)}|${addon.price}"><span>${escapeHtml(addon.name)} +£${addon.price}</span></label>
+  `).join('');
+}
+
 // ── Quote Calculator ──
 function calculateQuote() {
   const pkgEl = document.querySelector('input[name="site-package"]:checked');
@@ -281,7 +345,7 @@ function init() {
     if (e.key === 'Enter') { e.preventDefault(); checkBooking(); }
   });
 
-  // Auto-update quote on package/addon change
+  // Auto-update quote on package/addon change (for fallback static elements)
   document.querySelectorAll('input[name="site-package"]').forEach(el => {
     el.addEventListener('change', updateQuote);
   });
@@ -291,6 +355,9 @@ function init() {
 
   // Initial quote
   updateQuote();
+
+  // Load live packages from server (overrides static HTML if successful)
+  loadPackages();
 }
 
 document.addEventListener('DOMContentLoaded', init);

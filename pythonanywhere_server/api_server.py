@@ -75,6 +75,22 @@ def serve_static(filename):
     abort(404)
 
 
+# ── Packages & Pricing (Live Config) ──
+@app.route("/api/packages", methods=["GET"])
+def get_packages():
+    """Serve package and add-on configuration from packages.json.
+    This allows live updates to prices/features without rebuilding the app."""
+    packages_file = os.path.join(WWW_DIR, "packages.json")
+    if not os.path.exists(packages_file):
+        return jsonify({"error": "packages.json not found"}), 404
+    try:
+        with open(packages_file, "r", encoding="utf-8") as f:
+            config = json.load(f)
+        return jsonify(config)
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
 # ── Health Check ──
 @app.route("/api/health", methods=["GET"])
 def health():
@@ -426,6 +442,7 @@ if __name__ == "__main__":
     print("Base URL: http://localhost:5000")
     print("Endpoints:")
     print("  GET    /api/health")
+    print("  GET    /api/packages")
     print("  GET    /api/bookings")
     print("  GET    /api/bookings/<filename>")
     print("  DELETE /api/bookings/<filename>")
