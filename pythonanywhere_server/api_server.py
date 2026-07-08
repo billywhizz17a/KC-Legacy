@@ -23,10 +23,10 @@ TEXT_UPLOADS_DIR = os.path.join(BASE_DIR, "uploads", "text")
 IMAGE_UPLOADS_DIR = os.path.join(BASE_DIR, "uploads", "images")
 RESPONSES_DIR = os.path.join(BASE_DIR, "uploads", "responses")
 # Static customer website files (index.html, app.js, style.css, site.html, etc.)
-# On PythonAnywhere: /home/KCLegacy/www
+# On PythonAnywhere: /home/kclegacy/www
 # Locally: use the www folder in this directory
-if os.path.exists("/home/KCLegacy/www"):
-    WWW_DIR = "/home/KCLegacy/www"
+if os.path.exists("/home/kclegacy/www"):
+    WWW_DIR = "/home/kclegacy/www"
 else:
     WWW_DIR = os.path.join(BASE_DIR, "www")
 
