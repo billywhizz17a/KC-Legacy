@@ -73,15 +73,46 @@ function renderPackages(packages) {
   const container = document.querySelector('.package-list');
   if (!container) return;
   container.innerHTML = packages.map((pkg, i) => `
-    <label class="package-card">
-      <input type="radio" name="package" value="${escapeHtml(pkg.name)}|${pkg.fromPrice}"${i === 0 ? ' checked' : ''}>
-      <div class="package-content">
-        <div class="package-title">${escapeHtml(pkg.name)}</div>
-        <div class="package-sub">${escapeHtml(pkg.subtitle)}</div>
-        <div class="package-price">From &pound;${pkg.fromPrice}</div>
+    <div class="package-wrapper">
+      <label class="package-card">
+        <input type="radio" name="package" value="${escapeHtml(pkg.name)}|${pkg.fromPrice}"${i === 0 ? ' checked' : ''}>
+        <div class="package-content">
+          <div>
+            <div class="package-title">${escapeHtml(pkg.icon || '')} ${escapeHtml(pkg.name)}</div>
+            <div class="package-sub">${escapeHtml(pkg.subtitle)}</div>
+          </div>
+          <div class="package-price">From &pound;${pkg.fromPrice}</div>
+        </div>
+      </label>
+      <button type="button" class="package-details-toggle" onclick="togglePackageDetails(${i})">
+        <span id="toggle-label-${i}">Show details</span>
+        <span class="toggle-arrow" id="toggle-arrow-${i}">&#9662;</span>
+      </button>
+      <div class="package-details" id="package-details-${i}">
+        <p class="package-desc">${escapeHtml(pkg.description || '')}</p>
+        <p class="package-price-text">${escapeHtml(pkg.priceText || '')}</p>
+        <ul class="package-features">
+          ${(pkg.features || []).map(f => `<li>${escapeHtml(f)}</li>`).join('')}
+        </ul>
+        ${pkg.footerNote ? `<p class="package-footer-note">${escapeHtml(pkg.footerNote)}</p>` : ''}
       </div>
-    </label>
+    </div>
   `).join('');
+}
+
+function togglePackageDetails(idx) {
+  const details = document.getElementById(`package-details-${idx}`);
+  const label = document.getElementById(`toggle-label-${idx}`);
+  const arrow = document.getElementById(`toggle-arrow-${idx}`);
+  if (details.classList.contains('open')) {
+    details.classList.remove('open');
+    label.textContent = 'Show details';
+    arrow.classList.remove('up');
+  } else {
+    details.classList.add('open');
+    label.textContent = 'Hide details';
+    arrow.classList.add('up');
+  }
 }
 
 function renderAddons(addons) {

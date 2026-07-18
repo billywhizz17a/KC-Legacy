@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KC Legacy Admin - Package Manager</title>
+  <style>
+    :root {
+      --gold: #d4af37;
+      --gold-dim: #b8962e;
+      --dark: #0d0d0d;
+      --dark2: #1a1a1a;
+      --dark3: #252525;
+      --dark4: #333;
+      --text: #e0e0e0;
+      --muted: #888;
+      --green: #4caf50;
+      --red: #f44336;
+      --blue: #2196f3;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', Tahoma, sans-serif;
+      background: var(--dark);
+      color: var(--text);
+      min-height: 100vh;
+    }
+    /* Header */
+    .header {
+      background: var(--dark2);
+      border-bottom: 2px solid var(--gold);
+      padding: 15px 30px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .header h1 {
+      color: var(--gold);
+      font-size: 1.3rem;
+      letter-spacing: 1px;
+    }
+    .header-actions { display: flex; gap: 10px; }
+    .btn {
+      padding: 8px 20px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      font-weight: 600;
+      transition: all 0.2s;
+    }
+    .btn:hover { opacity: 0.85; }
+    .btn-save { background: var(--blue); color: #fff; }
+    .btn-publish { background: var(--gold); color: #000; font-weight: 700; }
+    .btn-rebuild { background: #ff9800; color: #000; }
+    .btn-test { background: var(--dark4); color: var(--text); }
+    .btn-add { background: var(--green); color: #fff; }
+    .btn-remove { background: var(--red); color: #fff; padding: 4px 10px; font-size: 0.8rem; }
+    .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    /* Main */
+    .container { max-width: 1400px; margin: 0 auto; padding: 20px 30px; }
+    .section { margin-bottom: 40px; }
+    .section-title {
+      font-size: 1.1rem;
+      color: var(--gold);
+      margin-bottom: 15px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--dark3);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    /* Card grids */
+    #packages, #addons {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(550px, 1fr));
+      gap: 15px;
+      align-items: start;
+    }
+
+    /* Cards */
+    .card {
+      background: var(--dark2);
+      border: 1px solid var(--dark3);
+      border-radius: 10px;
+      padding: 20px;
+    }
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 15px;
+    }
+    .card-title {
+      font-size: 1rem;
+      color: var(--gold);
+      font-weight: 600;
+    }
+
+    /* Form fields */
+    .field { margin-bottom: 12px; }
+    .field-row { display: flex; gap: 12px; margin-bottom: 12px; }
+    .field-row .field { flex: 1; margin-bottom: 0; }
+    label {
+      display: block;
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-bottom: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    input[type="text"],
+    input[type="number"],
+    textarea {
+      width: 100%;
+      padding: 8px 12px;
+      background: var(--dark);
+      border: 1px solid var(--dark4);
+      border-radius: 6px;
+      color: var(--text);
+      font-size: 0.9rem;
+      font-family: inherit;
+    }
+    input:focus, textarea:focus {
+      outline: none;
+      border-color: var(--gold);
+    }
+    textarea { resize: vertical; min-height: 60px; }
+
+    /* Features list */
+    .features-list { margin-top: 10px; }
+    .feature-item {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 6px;
+      align-items: center;
+    }
+    .feature-item input { flex: 1; }
+    .feature-item .btn-remove { flex-shrink: 0; }
+    .add-feature {
+      margin-top: 8px;
+      padding: 6px 14px;
+      background: var(--dark3);
+      color: var(--gold);
+      border: 1px dashed var(--gold-dim);
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.8rem;
+    }
+    .add-feature:hover { background: var(--dark4); }
+
+    /* Status bar */
+    .status-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: var(--dark2);
+      border-top: 1px solid var(--dark3);
+      padding: 10px 30px;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      font-size: 0.85rem;
+      z-index: 100;
+    }
+    .status-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--muted);
+    }
+    .status-dot.ok { background: var(--green); }
+    .status-dot.error { background: var(--red); }
+    .status-dot.busy { background: var(--gold); animation: pulse 1s infinite; }
+    @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+    /* Publish results */
+    .publish-results {
+      position: fixed;
+      top: 70px;
+      right: 30px;
+      background: var(--dark2);
+      border: 1px solid var(--gold);
+      border-radius: 10px;
+      padding: 20px;
+      min-width: 300px;
+      max-width: 400px;
+      z-index: 200;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+      display: none;
+    }
+    .publish-results.show { display: block; }
+    .publish-results h3 {
+      color: var(--gold);
+      margin-bottom: 12px;
+      font-size: 1rem;
+    }
+    .result-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+      font-size: 0.85rem;
+    }
+    .result-icon {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.7rem;
+      font-weight: bold;
+    }
+    .result-icon.ok { background: var(--green); color: #fff; }
+    .result-icon.error { background: var(--red); color: #fff; }
+    .result-icon.warning { background: #ff9800; color: #fff; }
+    .result-label { flex: 1; }
+    .result-detail { color: var(--muted); font-size: 0.8rem; }
+
+    /* Test results */
+    .test-info {
+      background: var(--dark2);
+      border: 1px solid var(--dark3);
+      border-radius: 8px;
+      padding: 15px;
+      margin-bottom: 15px;
+      font-size: 0.85rem;
+      display: none;
+    }
+    .test-info.show { display: block; }
+    .test-info .pkg-count { color: var(--gold); font-weight: 600; }
+
+    /* Unsaved indicator */
+    .unsaved { color: var(--red); font-size: 0.8rem; margin-left: 8px; }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <h1>KC Legacy Admin</h1>
+    <div class="header-actions">
+      <button class="btn btn-test" onclick="testSite()">Test Live Site</button>
+      <button class="btn btn-save" id="btnSave" onclick="saveLocal()">Save</button>
+      <button class="btn btn-rebuild" id="btnRebuild" onclick="rebuildApk()">Rebuild APK</button>
+      <button class="btn btn-publish" id="btnPublish" onclick="publish()">Publish to Live</button>
+    </div>
+  </div>
+
+  <div class="container">
+    <div id="testInfo" class="test-info"></div>
+
+    <!-- Packages Section -->
+    <div class="section">
+      <div class="section-title">
+        <span>Valet Packages</span>
+        <button class="btn btn-add" onclick="addPackage()">+ Add Package</button>
+      </div>
+      <div id="packages"></div>
+    </div>
+
+    <!-- Add-ons Section -->
+    <div class="section">
+      <div class="section-title">
+        <span>Add-ons</span>
+        <button class="btn btn-add" onclick="addAddon()">+ Add Add-on</button>
+      </div>
+      <div id="addons"></div>
+    </div>
+  </div>
+
+  <!-- Publish Results -->
+  <div id="publishResults" class="publish-results">
+    <h3>Publish Results</h3>
+    <div id="resultItems"></div>
+    <button class="btn btn-save" style="margin-top:10px;width:100%" onclick="closeResults()">Close</button>
+  </div>
+
+  <!-- Status Bar -->
+  <div class="status-bar">
+    <div class="status-dot" id="statusDot"></div>
+    <span id="statusText">Loading...</span>
+    <span id="unsavedIndicator" class="unsaved" style="display:none;">Unsaved changes</span>
+  </div>
+
+  <script>
+    let config = { packages: [], addons: [] };
+    let dirty = false;
+
+    // ── Load current config ──
+    async function load() {
+      try {
+        const res = await fetch('/api/current');
+        if (!res.ok) throw new Error('Failed to load');
+        config = await res.json();
+        render();
+        setStatus('ok', 'Loaded successfully');
+      } catch (e) {
+        setStatus('error', 'Load failed: ' + e.message);
+      }
+    }
+
+    // ── Render ──
+    function render() {
+      renderPackages();
+      renderAddons();
+      dirty = false;
+      updateDirty();
+    }
+
+    function renderPackages() {
+      const container = document.getElementById('packages');
+      container.innerHTML = config.packages.map((pkg, i) => `
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">${escapeHtml(pkg.icon || '')} ${escapeHtml(pkg.name || 'Untitled')}</span>
+            <button class="btn btn-remove" onclick="removePackage(${i})">Remove</button>
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label>Name</label>
+              <input type="text" value="${escapeAttr(pkg.name)}" oninput="updatePackage(${i}, 'name', this.value)">
+            </div>
+            <div class="field" style="max-width:80px;">
+              <label>Icon</label>
+              <input type="text" value="${escapeAttr(pkg.icon)}" oninput="updatePackage(${i}, 'icon', this.value)" style="text-align:center;font-size:1.2rem;">
+            </div>
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label>Subtitle</label>
+              <input type="text" value="${escapeAttr(pkg.subtitle)}" oninput="updatePackage(${i}, 'subtitle', this.value)">
+            </div>
+            <div class="field" style="max-width:100px;">
+              <label>From Price (£)</label>
+              <input type="number" value="${pkg.fromPrice}" oninput="updatePackage(${i}, 'fromPrice', parseInt(this.value)||0)">
+            </div>
+          </div>
+          <div class="field">
+            <label>Price Text (full pricing breakdown)</label>
+            <input type="text" value="${escapeAttr(pkg.priceText)}" oninput="updatePackage(${i}, 'priceText', this.value)">
+          </div>
+          <div class="field">
+            <label>Description</label>
+            <textarea oninput="updatePackage(${i}, 'description', this.value)">${escapeHtml(pkg.description)}</textarea>
+          </div>
+          <div class="field">
+            <label>Features (what's included)</label>
+            <div class="features-list" id="features-${i}">
+              ${(pkg.features || []).map((feat, j) => featureItem(i, j, feat)).join('')}
+            </div>
+            <div class="add-feature" onclick="addFeature(${i})">+ Add Feature</div>
+          </div>
+          <div class="field">
+            <label>Footer Note (optional)</label>
+            <input type="text" value="${escapeAttr(pkg.footerNote || '')}" oninput="updatePackage(${i}, 'footerNote', this.value)">
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function featureItem(pkgIdx, featIdx, text) {
+      return `
+        <div class="feature-item">
+          <input type="text" value="${escapeAttr(text)}" oninput="updateFeature(${pkgIdx}, ${featIdx}, this.value)">
+          <button class="btn btn-remove" onclick="removeFeature(${pkgIdx}, ${featIdx})">X</button>
+        </div>
+      `;
+    }
+
+    function renderAddons() {
+      const container = document.getElementById('addons');
+      container.innerHTML = config.addons.map((addon, i) => `
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">${escapeHtml(addon.icon || '')} ${escapeHtml(addon.name || 'Untitled')}</span>
+            <button class="btn btn-remove" onclick="removeAddon(${i})">Remove</button>
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label>Name</label>
+              <input type="text" value="${escapeAttr(addon.name)}" oninput="updateAddon(${i}, 'name', this.value)">
+            </div>
+            <div class="field" style="max-width:60px;">
+              <label>Icon</label>
+              <input type="text" value="${escapeAttr(addon.icon)}" oninput="updateAddon(${i}, 'icon', this.value)" style="text-align:center;font-size:1.2rem;">
+            </div>
+            <div class="field" style="max-width:80px;">
+              <label>Price (£)</label>
+              <input type="number" value="${addon.price}" oninput="updateAddon(${i}, 'price', parseInt(this.value)||0)">
+            </div>
+          </div>
+          <div class="field">
+            <label>Price Label (e.g. "From £15" or "£12")</label>
+            <input type="text" value="${escapeAttr(addon.priceLabel)}" oninput="updateAddon(${i}, 'priceLabel', this.value)">
+          </div>
+          <div class="field">
+            <label>Description</label>
+            <textarea oninput="updateAddon(${i}, 'description', this.value)">${escapeHtml(addon.description)}</textarea>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // ── Update functions ──
+    function markDirty() { dirty = true; updateDirty(); }
+
+    function updatePackage(i, field, value) {
+      config.packages[i][field] = value;
+      markDirty();
+    }
+
+    function updateFeature(pkgIdx, featIdx, value) {
+      config.packages[pkgIdx].features[featIdx] = value;
+      markDirty();
+    }
+
+    function addFeature(pkgIdx) {
+      if (!config.packages[pkgIdx].features) config.packages[pkgIdx].features = [];
+      config.packages[pkgIdx].features.push('New feature');
+      renderPackages();
+      markDirty();
+    }
+
+    function removeFeature(pkgIdx, featIdx) {
+      config.packages[pkgIdx].features.splice(featIdx, 1);
+      renderPackages();
+      markDirty();
+    }
+
+    function addPackage() {
+      config.packages.push({
+        name: 'New Package',
+        subtitle: '',
+        icon: '✨',
+        fromPrice: 0,
+        priceText: '',
+        description: '',
+        features: [],
+        footerNote: ''
+      });
+      renderPackages();
+      markDirty();
+    }
+
+    function removePackage(i) {
+      if (!confirm('Remove this package?')) return;
+      config.packages.splice(i, 1);
+      renderPackages();
+      markDirty();
+    }
+
+    function updateAddon(i, field, value) {
+      config.addons[i][field] = value;
+      markDirty();
+    }
+
+    function addAddon() {
+      config.addons.push({
+        name: 'New Add-on',
+        price: 0,
+        priceLabel: '£0',
+        description: '',
+        icon: '✨'
+      });
+      renderAddons();
+      markDirty();
+    }
+
+    function removeAddon(i) {
+      if (!confirm('Remove this add-on?')) return;
+      config.addons.splice(i, 1);
+      renderAddons();
+      markDirty();
+    }
+
+    // ── Actions ──
+    async function saveLocal() {
+      setStatus('busy', 'Saving...');
+      try {
+        const res = await fetch('/api/save', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(config)
+        });
+        if (res.ok) {
+          setStatus('ok', 'Saved locally');
+          dirty = false;
+          updateDirty();
+        } else {
+          setStatus('error', 'Save failed');
+        }
+      } catch (e) {
+        setStatus('error', 'Save error: ' + e.message);
+      }
+    }
+
+    async function publish() {
+      if (!confirm('Publish changes to the live website? This will:\n\n1. Save packages.json\n2. Push to GitHub\n3. Upload to PythonAnywhere\n4. Reload the web app\n\nContinue?')) return;
+
+      const btn = document.getElementById('btnPublish');
+      btn.disabled = true;
+      btn.textContent = 'Publishing...';
+      setStatus('busy', 'Publishing...');
+
+      try {
+        const res = await fetch('/api/publish', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(config)
+        });
+        const data = await res.json();
+        showResults(data.results || []);
+        const hasError = (data.results || []).some(r => r.status === 'error');
+        setStatus(hasError ? 'error' : 'ok', hasError ? 'Publish completed with errors' : 'Published successfully');
+        if (!hasError) { dirty = false; updateDirty(); }
+      } catch (e) {
+        setStatus('error', 'Publish error: ' + e.message);
+        showResults([{ step: 'publish', status: 'error', error: e.message }]);
+      }
+
+      btn.disabled = false;
+      btn.textContent = 'Publish to Live';
+    }
+
+    async function rebuildApk() {
+      if (!confirm('Rebuild the Android APK and upload to PythonAnywhere?\n\nThis will:\n1. Sync web assets to Android\n2. Build the APK (~1-2 min)\n3. Upload to PythonAnywhere\n4. Verify download works\n\nThe admin tool will be unresponsive during the build.\n\nContinue?')) return;
+
+      const btn = document.getElementById('btnRebuild');
+      btn.disabled = true;
+      btn.textContent = 'Building...';
+      setStatus('busy', 'Rebuilding APK (this takes 1-2 min)...');
+
+      try {
+        const res = await fetch('/api/rebuild-apk', { method: 'POST' });
+        const data = await res.json();
+        showResults(data.results || []);
+        const hasError = (data.results || []).some(r => r.status === 'error');
+        setStatus(hasError ? 'error' : 'ok', hasError ? 'APK build completed with errors' : 'APK rebuilt & uploaded');
+      } catch (e) {
+        setStatus('error', 'APK build error: ' + e.message);
+        showResults([{ step: 'rebuild', status: 'error', error: e.message }]);
+      }
+
+      btn.disabled = false;
+      btn.textContent = 'Rebuild APK';
+    }
+
+    async function testSite() {
+      setStatus('busy', 'Testing live site...');
+      try {
+        const res = await fetch('/api/test-site');
+        const data = await res.json();
+        const info = document.getElementById('testInfo');
+        if (data.status === 'ok') {
+          info.innerHTML = `<span class="pkg-count">Live site OK</span> — ${data.packages} packages, ${data.addons} add-ons currently live.`;
+          info.style.borderColor = 'var(--green)';
+          setStatus('ok', 'Live site responding');
+        } else {
+          info.innerHTML = `Live site error: ${data.error || data.code || 'Unknown'}`;
+          info.style.borderColor = 'var(--red)';
+          setStatus('error', 'Live site error');
+        }
+        info.classList.add('show');
+      } catch (e) {
+        setStatus('error', 'Test failed: ' + e.message);
+      }
+    }
+
+    // ── Results ──
+    function showResults(results) {
+      const container = document.getElementById('resultItems');
+      const labels = { save: 'Save locally', git: 'Push to GitHub', upload: 'Upload to PythonAnywhere', reload: 'Reload web app', verify: 'Verify live site', npm_install: 'npm install', cap_sync: 'Capacitor sync', gradle_build: 'Gradle build APK', upload_apk: 'Upload APK', verify_apk: 'Verify APK download' };
+      container.innerHTML = results.map(r => `
+        <div class="result-item">
+          <div class="result-icon ${r.status}">${r.status === 'ok' ? '✓' : r.status === 'error' ? '✗' : '!'}</div>
+          <div class="result-label">${labels[r.step] || r.step}</div>
+        </div>
+        ${r.error ? `<div class="result-detail" style="margin-left:28px;color:var(--red);">${escapeHtml(r.error)}</div>` : ''}
+        ${r.note ? `<div class="result-detail" style="margin-left:28px;">${escapeHtml(r.note)}</div>` : ''}
+        ${r.message ? `<div class="result-detail" style="margin-left:28px;color:var(--green);">${escapeHtml(r.message)}</div>` : ''}
+      `).join('');
+      document.getElementById('publishResults').classList.add('show');
+    }
+
+    function closeResults() {
+      document.getElementById('publishResults').classList.remove('show');
+    }
+
+    // ── Helpers ──
+    function setStatus(state, text) {
+      const dot = document.getElementById('statusDot');
+      const txt = document.getElementById('statusText');
+      dot.className = 'status-dot ' + state;
+      txt.textContent = text;
+    }
+
+    function updateDirty() {
+      document.getElementById('unsavedIndicator').style.display = dirty ? 'inline' : 'none';
+    }
+
+    function escapeHtml(s) {
+      if (s == null) return '';
+      return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    }
+    function escapeAttr(s) {
+      if (s == null) return '';
+      return String(s).replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+    }
+
+    // Warn before leaving with unsaved changes
+    window.addEventListener('beforeunload', (e) => {
+      if (dirty) { e.preventDefault(); e.returnValue = ''; }
+    });
+
+    // Init
+    load();
+  </script>
+
+</body>
+</html>
