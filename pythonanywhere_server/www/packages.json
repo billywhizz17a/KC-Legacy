@@ -1,11 +1,57 @@
 {
+  "addons": [
+    {
+      "description": "Complete removal of stubborn pet hair from carpets, seats, and boot areas.",
+      "icon": "🐾",
+      "name": "Pet Hair Removal",
+      "price": 15,
+      "priceLabel": "From £15"
+    },
+    {
+      "description": "Wipe down and dressing of all engine bay plastics and covers.",
+      "icon": "🔒",
+      "name": "Engine Bay Plastics Wipe Down & Dress",
+      "price": 12,
+      "priceLabel": "£12"
+    },
+    {
+      "description": "Delicate hand-cleansing to remove grease marks and stains from roof lining.",
+      "icon": "☁️",
+      "name": "Headliner Stain Removal",
+      "price": 10,
+      "priceLabel": "From £10"
+    },
+    {
+      "description": "Full carpet and boot shampooed with wet-vac extraction for a deeper clean.",
+      "icon": "🧽",
+      "name": "Deeper Carpet & Boot Shampooed & Wet-Vac Extraction",
+      "price": 40,
+      "priceLabel": "From £40"
+    },
+    {
+      "description": "All seats shampooed and wet-vac extraction for a thorough deep clean.",
+      "icon": "💺",
+      "name": "Seats Shampooed & Wet-Vac Extraction",
+      "price": 40,
+      "priceLabel": "From £40"
+    },
+    {
+      "description": "Anti-bacterial steam cleaning and sanitisation of baby/child car seats.",
+      "icon": "👶",
+      "name": "Child Seat Wiped & Sanitised with Steam Cleaner",
+      "price": 10,
+      "priceLabel": "From £10"
+    },
+    {
+      "description": "Restoration of cloudy, oxidised headlights to improve clarity and appearance.",
+      "icon": "💡",
+      "name": "Headlight Restoration",
+      "price": 35,
+      "priceLabel": "From £35"
+    }
+  ],
   "packages": [
     {
-      "name": "Legacy Refresh",
-      "subtitle": "Mini Valet",
-      "icon": "🫧",
-      "fromPrice": 40,
-      "priceText": "Hatchback £40 / Saloon £50 / SUV & People Carrier £60",
       "description": "Quick maintenance clean for busy customers.",
       "features": [
         "Rubbish removal (please remove items of value and significance)",
@@ -19,14 +65,14 @@
         "Dashboard, centre console and door panels wiped down",
         "Windows and glass cleaned (internal/external)"
       ],
-      "footerNote": "Contact me if a more bespoke package is required"
+      "footerNote": "Contact me if a more bespoke package is required",
+      "fromPrice": 40,
+      "icon": "🫧",
+      "name": "Legacy Refresh",
+      "priceText": "Hatchback £40 / Saloon £50 / SUV & People Carrier £60",
+      "subtitle": "Mini Valets"
     },
     {
-      "name": "Legacy Revival",
-      "subtitle": "Full Valet",
-      "icon": "✨",
-      "fromPrice": 95,
-      "priceText": "Hatchback £95 / Saloon £110 / SUV & People Carrier £125",
       "description": "Full inside and out clean for a refreshed feel.",
       "features": [
         "Rubbish removal (please remove items of value and significance)",
@@ -48,58 +94,12 @@
         "Protection applied to dashboard, trim, air vents, centre console, and all door panels",
         "External rubber restored (if required)"
       ],
-      "footerNote": ""
-    }
-  ],
-  "addons": [
-    {
-      "name": "Pet Hair Removal",
-      "price": 15,
-      "priceLabel": "From £15",
-      "description": "Complete removal of stubborn pet hair from carpets, seats, and boot areas.",
-      "icon": "🐾"
-    },
-    {
-      "name": "Engine Bay Plastics Wipe Down & Dress",
-      "price": 12,
-      "priceLabel": "£12",
-      "description": "Wipe down and dressing of all engine bay plastics and covers.",
-      "icon": "🔒"
-    },
-    {
-      "name": "Headliner Stain Removal",
-      "price": 10,
-      "priceLabel": "From £10",
-      "description": "Delicate hand-cleansing to remove grease marks and stains from roof lining.",
-      "icon": "☁️"
-    },
-    {
-      "name": "Deeper Carpet & Boot Shampooed & Wet-Vac Extraction",
-      "price": 40,
-      "priceLabel": "From £40",
-      "description": "Full carpet and boot shampooed with wet-vac extraction for a deeper clean.",
-      "icon": "🧽"
-    },
-    {
-      "name": "Seats Shampooed & Wet-Vac Extraction",
-      "price": 40,
-      "priceLabel": "From £40",
-      "description": "All seats shampooed and wet-vac extraction for a thorough deep clean.",
-      "icon": "💺"
-    },
-    {
-      "name": "Child Seat Wiped & Sanitised with Steam Cleaner",
-      "price": 10,
-      "priceLabel": "From £10",
-      "description": "Anti-bacterial steam cleaning and sanitisation of baby/child car seats.",
-      "icon": "👶"
-    },
-    {
-      "name": "Headlight Restoration",
-      "price": 35,
-      "priceLabel": "From £35",
-      "description": "Restoration of cloudy, oxidised headlights to improve clarity and appearance.",
-      "icon": "💡"
+      "footerNote": "",
+      "fromPrice": 95,
+      "icon": "✨",
+      "name": "Legacy Revival",
+      "priceText": "Hatchback £95 / Saloon £110 / SUV & People Carrier £125",
+      "subtitle": "Full Valet"
     }
   ]
 }
