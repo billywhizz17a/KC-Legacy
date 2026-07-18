@@ -4,8 +4,8 @@
       "description": "Complete removal of stubborn pet hair from carpets, seats, and boot areas.",
       "icon": "🐾",
       "name": "Pet Hair Removal",
-      "price": 15,
-      "priceLabel": "From £15"
+      "price": 18,
+      "priceLabel": "From £18"
     },
     {
       "description": "Wipe down and dressing of all engine bay plastics and covers.",
@@ -18,36 +18,36 @@
       "description": "Delicate hand-cleansing to remove grease marks and stains from roof lining.",
       "icon": "☁️",
       "name": "Headliner Stain Removal",
-      "price": 10,
-      "priceLabel": "From £10"
+      "price": 15,
+      "priceLabel": "From £15"
     },
     {
       "description": "Full carpet and boot shampooed with wet-vac extraction for a deeper clean.",
       "icon": "🧽",
       "name": "Deeper Carpet & Boot Shampooed & Wet-Vac Extraction",
-      "price": 40,
-      "priceLabel": "From £40"
+      "price": 54,
+      "priceLabel": "From £55"
     },
     {
       "description": "All seats shampooed and wet-vac extraction for a thorough deep clean.",
       "icon": "💺",
       "name": "Seats Shampooed & Wet-Vac Extraction",
-      "price": 40,
-      "priceLabel": "From £40"
+      "price": 70,
+      "priceLabel": "From £70"
     },
     {
       "description": "Anti-bacterial steam cleaning and sanitisation of baby/child car seats.",
       "icon": "👶",
       "name": "Child Seat Wiped & Sanitised with Steam Cleaner",
-      "price": 10,
-      "priceLabel": "From £10"
+      "price": 15,
+      "priceLabel": "From £15"
     },
     {
       "description": "Restoration of cloudy, oxidised headlights to improve clarity and appearance.",
       "icon": "💡",
       "name": "Headlight Restoration",
-      "price": 35,
-      "priceLabel": "From £35"
+      "price": 50,
+      "priceLabel": "From £50"
     }
   ],
   "packages": [
