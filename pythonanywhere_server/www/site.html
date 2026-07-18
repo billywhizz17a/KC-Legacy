@@ -265,6 +265,32 @@
 
   </main>
 
+  <footer class="site-footer" style="text-align:center; padding: 20px; color:#888; border-top:1px solid rgba(212,175,55,0.2); margin-top: 40px;">
+    <p>
+      <a href="privacy.html" style="color: var(--gold); text-decoration: none; margin: 0 10px;">Privacy Policy</a>
+      <a href="terms.html" style="color: var(--gold); text-decoration: none; margin: 0 10px;">Terms of Use</a>
+    </p>
+  </footer>
+
+  <div id="cookie-banner" style="display:none; position:fixed; bottom:0; left:0; width:100%; background:#111; border-top:1px solid var(--gold); padding:12px 20px; color:#eee; z-index:9999; box-sizing:border-box;">
+    <p style="margin:0; font-size:0.9rem;">This site uses cookies and Google AdSense to personalise ads. By continuing, you agree to our <a href="privacy.html" style="color:var(--gold);">Privacy Policy</a>.</p>
+    <button id="cookie-accept" class="btn-gold-site" style="margin-top:10px;">Accept</button>
+  </div>
+  <script>
+    (function() {
+      if (!localStorage.getItem('cookieConsent')) {
+        var banner = document.getElementById('cookie-banner');
+        if (banner) banner.style.display = 'block';
+      }
+      var btn = document.getElementById('cookie-accept');
+      if (btn) btn.addEventListener('click', function() {
+        localStorage.setItem('cookieConsent', 'true');
+        var banner = document.getElementById('cookie-banner');
+        if (banner) banner.style.display = 'none';
+      });
+    })();
+  </script>
+
   <script src="site.js"></script>
 </body>
 </html>
