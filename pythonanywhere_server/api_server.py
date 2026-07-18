@@ -35,6 +35,33 @@ os.makedirs(IMAGE_UPLOADS_DIR, exist_ok=True)
 os.makedirs(RESPONSES_DIR, exist_ok=True)
 
 
+# ── Large file chunk reassembly (e.g. Booking.apk uploaded in parts) ──
+def _reassemble_large_files():
+    """Combine split file parts (e.g. Booking.apk.part*) into a single file on startup."""
+    parts_dir = os.path.join(WWW_DIR, "apk_parts")
+    if not os.path.isdir(parts_dir):
+        return
+    parts = sorted([f for f in os.listdir(parts_dir) if f.startswith("Booking.apk.part")])
+    if not parts:
+        return
+    target = os.path.join(WWW_DIR, "Booking.apk")
+    try:
+        with open(target, "wb") as out:
+            for part in parts:
+                part_path = os.path.join(parts_dir, part)
+                with open(part_path, "rb") as p:
+                    out.write(p.read())
+        # Clean up parts once successfully reassembled
+        for part in parts:
+            os.remove(os.path.join(parts_dir, part))
+        os.rmdir(parts_dir)
+        print(f"Reassembled {target} from {len(parts)} parts")
+    except Exception as e:
+        print(f"Failed to reassemble APK chunks: {e}")
+
+_reassemble_large_files()
+
+
 # ── Main Website (Flask-served, replaces Streamlit) ──
 @app.route("/", methods=["GET"])
 def home():
