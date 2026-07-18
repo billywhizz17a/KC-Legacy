@@ -198,7 +198,7 @@
   <script type="module">
     // AdMob banner ad - using Google test IDs for verification
     try {
-      const AdMob = Capacitor.registerPlugin('AdMob');
+      const AdMob = window.Capacitor.Plugins.AdMob;
       await AdMob.initialize({ requestTrackingAuthorization: false, initializeForTesting: true });
       await AdMob.showBanner({
         adId: 'ca-app-pub-3940256099942544/6300978111',
