@@ -6,14 +6,14 @@
   <meta name="theme-color" content="#d4af37">
   <title>KC Legacy Valeting - Book Now</title>
   <link rel="manifest" href="manifest.json">
-  <link rel="stylesheet" href="https://KCLegacy.pythonanywhere.com/style.css">
+  <link rel="stylesheet" href="style.css">
   <link rel="apple-touch-icon" href="icon-192.png">
 </head>
 <body>
 
   <!-- Header -->
   <header class="app-header">
-    <img src="https://KCLegacy.pythonanywhere.com/header2.jpg" alt="KC Legacy Valeting" class="header-banner">
+    <img src="header2.jpg" alt="KC Legacy Valeting" class="header-banner">
   </header>
 
   <div class="container">
@@ -173,6 +173,27 @@
 
   </div>
 
-  <script src="https://KCLegacy.pythonanywhere.com/app.js"></script>
+  <script src="app.js"></script>
+  <script>
+    // OTA update: fetch latest customer app.js from server and reload if newer
+    (function() {
+      var OTA_URL = 'https://KCLegacy.pythonanywhere.com/api/ota/customer-app.js';
+      var OTA_CSS_URL = 'https://KCLegacy.pythonanywhere.com/api/ota/customer-style.css';
+      fetch(OTA_URL).then(function(r) { return r.text(); }).then(function(code) {
+        if (code && code.trim().length > 100) {
+          var s = document.createElement('script');
+          s.textContent = code;
+          document.body.appendChild(s);
+        }
+      }).catch(function(e) { console.log('OTA: using local app.js', e); });
+      fetch(OTA_CSS_URL).then(function(r) { return r.text(); }).then(function(css) {
+        if (css && css.trim().length > 100) {
+          var style = document.createElement('style');
+          style.textContent = css;
+          document.head.appendChild(style);
+        }
+      }).catch(function(e) { console.log('OTA: using local style.css', e); });
+    })();
+  </script>
 </body>
 </html>

@@ -91,6 +91,53 @@ def get_packages():
         return jsonify({"error": str(e)}), 500
 
 
+# ── OTA Updates (push code updates to existing customer apps) ──
+@app.route("/api/ota/customer-app.js", methods=["GET"])
+def ota_customer_app_js():
+    """Serve the latest customer app.js for OTA updates."""
+    # On PythonAnywhere: look in the repo's customer_app/www folder
+    candidates = [
+        os.path.join(os.path.dirname(BASE_DIR), "kc_legacy_valeting", "customer_app", "www", "app.js"),
+        os.path.join(BASE_DIR, "..", "customer_app", "www", "app.js"),
+        os.path.join(os.path.dirname(BASE_DIR), "customer_app", "www", "app.js"),
+    ]
+    # Also check a dedicated OTA folder in WWW_DIR
+    ota_file = os.path.join(WWW_DIR, "ota", "customer-app.js")
+    if os.path.exists(ota_file):
+        candidates.insert(0, ota_file)
+    for path in candidates:
+        if os.path.exists(path):
+            try:
+                with open(path, "r", encoding="utf-8") as f:
+                    content = f.read()
+                return content, 200, {"Content-Type": "text/javascript", "Cache-Control": "no-cache"}
+            except Exception as e:
+                return jsonify({"error": str(e)}), 500
+    return jsonify({"error": "OTA app.js not found"}), 404
+
+
+@app.route("/api/ota/customer-style.css", methods=["GET"])
+def ota_customer_style_css():
+    """Serve the latest customer app style.css for OTA updates."""
+    candidates = [
+        os.path.join(os.path.dirname(BASE_DIR), "kc_legacy_valeting", "customer_app", "www", "style.css"),
+        os.path.join(BASE_DIR, "..", "customer_app", "www", "style.css"),
+        os.path.join(os.path.dirname(BASE_DIR), "customer_app", "www", "style.css"),
+    ]
+    ota_file = os.path.join(WWW_DIR, "ota", "customer-style.css")
+    if os.path.exists(ota_file):
+        candidates.insert(0, ota_file)
+    for path in candidates:
+        if os.path.exists(path):
+            try:
+                with open(path, "r", encoding="utf-8") as f:
+                    content = f.read()
+                return content, 200, {"Content-Type": "text/css", "Cache-Control": "no-cache"}
+            except Exception as e:
+                return jsonify({"error": str(e)}), 500
+    return jsonify({"error": "OTA style.css not found"}), 404
+
+
 # ── Health Check ──
 @app.route("/api/health", methods=["GET"])
 def health():
