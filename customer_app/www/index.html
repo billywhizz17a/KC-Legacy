@@ -195,5 +195,19 @@
       }).catch(function(e) { console.log('OTA: using local style.css', e); });
     })();
   </script>
+  <script type="module">
+    // AdMob banner ad
+    try {
+      const AdMob = Capacitor.registerPlugin('AdMob');
+      await AdMob.initialize({ requestTrackingAuthorization: false, initializeForTesting: false });
+      await AdMob.showBanner({
+        adId: 'ca-app-pub-9761950326441561/5617342079',
+        adSize: 'ADAPTIVE_BANNER',
+        position: 'BOTTOM_CENTER',
+        margin: 0,
+        isTesting: false
+      });
+    } catch (e) { console.log('AdMob not ready:', e); }
+  </script>
 </body>
 </html>
